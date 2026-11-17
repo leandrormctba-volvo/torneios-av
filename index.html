@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AV Torneios</title>
+<title>Campeonatos e Torneios AV</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -154,6 +154,12 @@ table.st tr{animation:fadeUp .4s ease both}
 .splash h1{font-size:34px;margin-top:20px;animation:fadeUp .6s .3s both}
 .splash p{opacity:.9;margin-top:6px;animation:fadeUp .6s .45s both}
 .splash .balls{font-size:28px;margin-top:26px;letter-spacing:12px;animation:fadeUp .6s .6s both}
+.splash{position:relative}
+.splash h1{line-height:1.1}
+.splash-logo{position:absolute;bottom:42px;left:0;right:0;margin:0 auto;height:46px;opacity:.95;animation:fadeUp .6s .8s both}
+.bar .lg{height:22px;margin-left:auto;opacity:.75;flex:none}
+.adm-badge+.lg{margin-left:8px}
+.bar>div:not(.back){min-width:0}
 .adm-badge{font-size:11px;font-weight:700;background:#fef3c7;color:#92400e;padding:4px 8px;border-radius:999px;margin-left:auto}
 .tabbar{flex:none;display:flex;justify-content:space-around;padding:10px 0 22px;background:#fff;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}
 .tabbar div{text-align:center}.tabbar div.on{color:var(--brand);font-weight:700}
@@ -172,7 +178,7 @@ table.st tr{animation:fadeUp .4s ease both}
 <body>
 <div class="stage">
   <section>
-    <div class="logo"><div class="mk">AV</div>AV Torneios <span style="font-weight:400;opacity:.6;font-size:15px;margin-left:6px">· protótipo de telas</span></div>
+    <div class="logo"><div class="mk">AV</div><div>Campeonatos e Torneios AV<div style="font-weight:400;opacity:.6;font-size:13px">protótipo de telas</div></div><img src="logo-av-branca.png" alt="Associação Volvo" style="height:34px;margin-left:auto;opacity:.85"></div>
     <div id="phase" class="phase">Atleta</div>
     <h1 id="stepTitle">Bem-vindo</h1>
     <p id="stepText"></p>
@@ -194,9 +200,10 @@ table.st tr{animation:fadeUp .4s ease both}
       <div class="screen" id="s-splash">
         <div class="splash">
           <div class="big">AV</div>
-          <h1>AV Torneios</h1>
-          <p>Campeonatos e torneios<br>na palma da mão</p>
+          <h1>Campeonatos<br>e Torneios AV</h1>
+          <p>Inscrições, tabelas e chaves<br>na palma da mão</p>
           <div class="balls">🏐⚽🃏</div>
+          <img class="splash-logo" src="logo-av-branca.png" alt="Associação Volvo">
         </div>
       </div>
 
@@ -312,7 +319,7 @@ table.st tr{animation:fadeUp .4s ease both}
               <div><label class="f" style="margin-top:0">Derrota</label><input class="inp" id="f-d" value="0" inputmode="numeric"></div>
             </div>
           </div>
-          <div class="info" id="f-trucoInfo" style="display:none">🃏 <b>Truco:</b> inscrição em dupla, mas o <b>ranking é individual</b>. O chaveamento é sempre <b>eliminatória dupla</b>.</div>
+          <div class="info" id="f-trucoInfo" style="display:none">🃏 <b>Truco:</b> inscrição em dupla, mas o <b>ranking é individual</b>. O chaveamento é sempre <b>eliminatória dupla</b>: em cada chave, o invicto é o 1º e o vencedor da repescagem é o 2º.</div>
           <div class="sec">Fases finais</div>
           <div class="tg"><div>Quartas de final<small id="qHint">Disponível só com 4 grupos (1º e 2º de cada)</small></div><div class="sw" id="sw-q"></div></div>
           <div class="tg"><div>Semifinal</div><div class="sw on" id="sw-s"></div></div>
@@ -339,8 +346,15 @@ table.st tr{animation:fadeUp .4s ease both}
       <!-- TRUCO: ELIMINATÓRIA DUPLA -->
       <div class="screen" id="s-dbl">
         <div class="status"><span>9:41</span><span>●●● 📶 🔋</span></div>
-        <div class="bar"><div><div class="sub">🃏 Torneio de Truco · Grupo A</div><h2>Eliminatória dupla</h2></div></div>
-        <div class="body" id="dblBody"></div>
+        <div class="bar"><div><div class="sub">🃏 Torneio de Truco · 16 duplas</div><h2>Eliminatória dupla</h2></div></div>
+        <div class="body" id="dblBody">
+          <div class="info" style="margin-top:0">4 chaves com 4 duplas. Vencedor joga com vencedor, perdedor joga com perdedor. Precisa <b>perder 2 vezes</b> para sair.</div>
+          <div class="seg" id="chTabs" style="margin-top:10px"><button data-c="0" class="on">Chave A</button><button data-c="1">Chave B</button><button data-c="2">Chave C</button><button data-c="3">Chave D</button></div>
+          <div id="chBody"></div>
+          <div class="sec">Classificados para as quartas</div>
+          <div class="card" id="chClass" style="padding:8px 12px"></div>
+          <button class="btn gold" id="dblKo">Ver quartas de final →</button>
+        </div>
       </div>
 
       <!-- TRUCO: RANKING -->
@@ -367,14 +381,14 @@ let me={nome:'Leandro Moraes',mat:'A123456',tel:'(41) 99876-5432',email:'leandro
 const T={
   volei:{id:'volei',nome:'Campeonato de Vôlei',em:'🏐',bg:'#fef3c7',max:15,tipo:'Equipe',ini:'10/12',fim:'15/12',insc:10},
   futebol:{id:'futebol',nome:'Campeonato de Futebol',em:'⚽',bg:'#dcfce7',max:15,tipo:'Equipe',ini:'10/12',fim:'15/12',insc:16},
-  truco:{id:'truco',nome:'Torneio de Truco',em:'🃏',bg:'#ffe4e6',max:2,tipo:'Dupla',ini:'10/12',fim:'15/12',insc:10}
+  truco:{id:'truco',nome:'Torneio de Truco',em:'🃏',bg:'#ffe4e6',max:2,tipo:'Dupla',ini:'10/12',fim:'15/12',insc:16}
 };
 let sel=T.volei, role=null, roster=[];
 const cfg={mod:'volei',g:2,p:5,sys:'rodizio',v:3,e:1,d:0,q:false,s:true,f:true,t:true};
 const teamNames={
   volei:['Brasil','Itália','Sérvia','Polônia','Japão','EUA','Cuba','França','Argentina','Holanda','Turquia','China','Canadá','Irã','Alemanha','Egito'],
   futebol:['Brasil','Argentina','França','Alemanha','Espanha','Itália','Uruguai','Portugal','Inglaterra','Holanda','Croácia','Bélgica','México','Japão','Chile','Colômbia'],
-  truco:['Leandro / Sérgio','Carla / Juliana','Marcos / Rafael','Patrícia / Aline','Bruno / Diego','Tiago / Paulo','Lucas / Vitor','Ana / Bia','Caio / Davi','Edu / Fábio']
+  truco:['Leandro / Sérgio','Carla / Juliana','Marcos / Rafael','Patrícia / Aline','Bruno / Diego','Tiago / Paulo','Lucas / Vitor','Ana / Bia','Caio / Davi','Edu / Fábio','Gil / Hugo','Ivo / João','Kátia / Lia','Mário / Nei','Otávio / Pedro','Renato / Saulo']
 };
 
 /* ================= NAVEGAÇÃO DE TELAS ================= */
@@ -477,7 +491,7 @@ function setMod(v){
   cfg.mod=v;
   if(v==='volei'){cfg.g=2;cfg.p=5;cfg.sys='rodizio'}
   if(v==='futebol'){cfg.g=4;cfg.p=4;cfg.sys='rodizio'}
-  if(v==='truco'){cfg.g=2;cfg.p=5;cfg.sys='dupla'}
+  if(v==='truco'){cfg.g=4;cfg.p=4;cfg.sys='dupla';cfg.q=true;cfg.s=true;cfg.f=true;cfg.t=true}
   renderFmt();
 }
 $('#fmtBody').addEventListener('click',e=>{
@@ -557,30 +571,45 @@ function renderKO(){
   }
   if(champ)h+=`<div class="champ"><div class="t">🏆</div><p>CAMPEÃO</p><h3>${champ.n}</h3><div class="podium"><div>🥈<br><b>${vice.n}</b></div>${third?`<div>🥉<br><b>${third.n}</b></div>`:''}</div></div>`;
   $('#koSub').textContent=T[cfg.mod].em+' '+T[cfg.mod].nome;
+  $('#s-ko .back').dataset.go=cfg.mod==='truco'?'s-dbl':'s-grp';
   $('#koBody').innerHTML=h||'<div class="info">Ative semifinal/final na formatação.</div>';
   $$('#koBody .match').forEach((m,i)=>m.style.animationDelay=(i*.12)+'s');
 }
 
 /* ================= TRUCO: ELIMINATÓRIA DUPLA ================= */
-function renderDbl(){
-  const n=['A · Leandro / Sérgio','B · Carla / Juliana','C · Marcos / Rafael','D · Patrícia / Aline','E · Bruno / Diego'];
-  const m=(id,lb,a,b,sa,sb,ex='',cls='')=>`<div class="match ${cls}"><div class="lb"><span>${id} · ${lb}</span><span>${ex}</span></div><div class="tm ${sa>sb?'w':''}"><span>${a}</span><b>${sa}</b></div><div class="tm ${sb>sa?'w':''}"><span>${b}</span><b>${sb}</b></div></div>`;
-  $('#dblBody').innerHTML=`
-   <div class="info" style="margin-top:0">Precisa <b>perder 2 vezes</b> para sair. Quem perde na chave principal vai para a <b>repescagem</b>. A dupla <b>E</b> aguarda a 1ª rodada.</div>
-   <div class="round">Chave dos vencedores</div>
-   ${m('J1','A × B',n[0],n[1],12,7)}
-   ${m('J2','C × D',n[2],n[3],12,9)}
-   ${m('J3','Venc. J2 × E',n[2],n[4],10,12,'E entra aqui')}
-   ${m('J4','Venc. J1 × Venc. J3',n[0],n[4],12,8,'A aguarda')}
-   <div class="round lw">Repescagem (1 derrota)</div>
-   ${m('R1','Perd. J1 × Perd. J2',n[1],n[3],12,5,'D eliminada')}
-   ${m('R2','Venc. R1 × Perd. J3',n[1],n[2],12,10,'C eliminada')}
-   ${m('R3','Venc. R2 × Perd. J4',n[4],n[1],12,11,'B eliminada')}
-   <div class="round" style="color:#b45309">Grande final do grupo</div>
-   ${m('F','Venc. chave principal × Venc. repescagem',n[0],n[4],12,6,'🏆','final')}
-   <div class="explain">Se a dupla da repescagem vencer a final, as duas ficam com 1 derrota e jogam uma partida extra.</div>`;
-  $$('#dblBody .match,#dblBody .round').forEach((e,i)=>{e.style.animation='fadeUp .45s ease both';e.style.animationDelay=(i*.15)+'s'});
+/* Regra (por chave de 4): J1 = 1×2, J2 = 3×4.
+   Vencedores: J3 = Venc.J1 × Venc.J2  -> quem vence (nenhuma derrota) é o 1º da chave.
+   Repescagem: J4 = Perd.J1 × Perd.J2 ; J5 = Perd.J3 × Venc.J4 -> quem vence é o 2º da chave. */
+let chaves=[];
+function res(a,b,wA){const l=Math.floor(rnd()*11);if(wA===undefined)wA=play(a,b)[0]===12;return wA?{a,b,w:a,l:b,sa:12,sb:l}:{a,b,w:b,l:a,sa:l,sb:12}}
+function buildChaves(){
+  seed=31;cfg.mod='truco';const nm=teamNames.truco;chaves=[];
+  for(let c=0;c<4;c++){
+    const p=[0,1,2,3].map(k=>({n:nm[c*4+k],i:c*4+k,num:k+1}));
+    const fx=c===0; // chave A segue exatamente o exemplo: 2 vence 1, 4 vence 3, 4 vence 2, 1 vence 3, 1 vence 2
+    const J1=res(p[0],p[1],fx?false:undefined),J2=res(p[2],p[3],fx?false:undefined);
+    const J3=res(J1.w,J2.w,fx?false:undefined),J4=res(J1.l,J2.l,fx?true:undefined);
+    const J5=res(J3.l,J4.w,fx?false:undefined);
+    chaves.push({L:'ABCD'[c],p,J1,J2,J3,J4,J5,first:J3.w,second:J5.w});
+  }
+  groups=chaves.map(c=>({L:c.L,ts:[c.first,c.second]}));
 }
+function renderChave(c){
+  const ch=chaves[c],tag=t=>`${t.num} · ${t.n}`;
+  const m=(id,lb,r,ex='',cls='')=>`<div class="match ${cls}"><div class="lb"><span>${id} · ${lb}</span><span>${ex}</span></div><div class="tm ${r.w===r.a?'w':''}"><span>${tag(r.a)}</span><b>${r.sa}</b></div><div class="tm ${r.w===r.b?'w':''}"><span>${tag(r.b)}</span><b>${r.sb}</b></div></div>`;
+  $('#chBody').innerHTML=`
+   <div class="round">1ª rodada</div>${m('J1','1 × 2',ch.J1)}${m('J2','3 × 4',ch.J2)}
+   <div class="round">Chave dos vencedores</div>${m('J3','Venc. J1 × Venc. J2',ch.J3,'🥇 1º da chave','final')}
+   <div class="round lw">Repescagem (lado esquerdo)</div>${m('J4','Perd. J1 × Perd. J2',ch.J4,'perdedor sai')}${m('J5','Perd. J3 × Venc. J4',ch.J5,'🥈 2º da chave')}`;
+  $$('#chBody .match,#chBody .round').forEach((e,i)=>{e.style.animation='fadeUp .45s ease both';e.style.animationDelay=(i*.1)+'s'});
+  $$('#chTabs button').forEach(b=>b.classList.toggle('on',+b.dataset.c===c));
+}
+function renderDbl(){
+  buildChaves();renderChave(0);
+  $('#chClass').innerHTML=`<table class="st"><tr><th style="text-align:left">Chave</th><th style="text-align:left">1º (invicto)</th><th style="text-align:left">2º (repescagem)</th></tr>${chaves.map(c=>`<tr><td class="n">${c.L}</td><td class="n">${c.first.n}</td><td class="n" style="font-weight:500">${c.second.n}</td></tr>`).join('')}</table>`;
+}
+$('#chTabs').addEventListener('click',e=>{const b=e.target.closest('[data-c]');if(b)renderChave(+b.dataset.c)});
+$('#dblKo').onclick=()=>{cfg.mod='truco';cfg.q=true;cfg.g=4;renderKO();show('s-ko')};
 function renderRank(){
   const P=[['Leandro Moraes',6,1,78],['Sérgio Martins',6,1,78],['Bruno Ferreira',5,2,71],['Diego Alves',5,2,71],['Carla Ribeiro',4,2,62],['Juliana Costa',4,2,62],['Marcos Oliveira',3,3,55],['Rafael Souza',3,3,55],['Patrícia Lima',1,2,29],['Aline Santos',1,2,29]];
   const md=['🥇','🥈','🥉'];
@@ -611,7 +640,7 @@ const hide=()=>cursor.style.opacity=0;
 function resetCad(){['c-nome','c-mat','c-tel','c-email'].forEach(i=>$('#'+i).value='');$('#drop').classList.remove('has');$('#dropTxt').innerHTML='Toque para anexar o atestado médico<br><small>PDF ou foto</small>'}
 
 const steps=[
- {ph:'Atleta',t:'AV Torneios',x:'Aplicativo de <b>campeonatos e torneios</b>. O atleta se cadastra, escolhe o campeonato e faz a inscrição. O administrador cria e formata as disputas.',run:async t=>{show('s-splash');await sleep(2600)}},
+ {ph:'Atleta',t:'Campeonatos e Torneios AV',x:'Aplicativo de <b>campeonatos e torneios da Associação Volvo</b>. O atleta se cadastra, escolhe o campeonato e faz a inscrição. O administrador cria e formata as disputas.',run:async t=>{show('s-splash');await sleep(2600)}},
  {ph:'Atleta',t:'Cadastro do atleta',x:'Na primeira tela o atleta <b>cadastra seus dados</b>: nome, matrícula, telefone para contato e e-mail. Também pode <b>anexar o atestado médico</b> (PDF ou foto).',run:async t=>{
    resetCad();show('s-cad');await sleep(600);
    await type($('#c-nome'),'Leandro Moraes',t);await type($('#c-mat'),'A123456',t);await type($('#c-tel'),'(41) 99876-5432',t);await type($('#c-email'),'leandro@email.com',t);
@@ -650,10 +679,14 @@ const steps=[
    await tap($('#sw-q'),t);await sleep(500);await tap($('#f-gen'),t);await sleep(1500);
    const gb=$('#grpBody');gb.scrollTo({top:gb.scrollHeight,behavior:'smooth'});await sleep(1000);
    await tap($('[data-ko]'),t);hide();await sleep(1500);const k=$('#koBody');for(let i=0;i<8;i++){if(!alive(t))return;k.scrollBy({top:100,behavior:'smooth'});await sleep(600)}}},
- {ph:'Administrador',t:'Truco: eliminatória dupla',x:'No truco o chaveamento é <b>sempre eliminatória dupla</b>. A × B e C × D; quem vence C×D enfrenta a <b>E</b>, que aguardava. O <b>A</b> enfrenta quem vencer esse jogo. Quem perde vai para a <b>repescagem</b>: o B joga com quem perdeu C×D. Posso também dividir em grupos.',adm:1,run:async t=>{
+ {ph:'Administrador',t:'Truco: eliminatória dupla em chaves',x:'Truco é <b>sempre eliminatória dupla</b>. Com 16 duplas: <b>4 chaves (A, B, C, D) de 4</b>. Na chave: 1×2 e 3×4. <b>Vencedor joga com vencedor</b> e <b>perdedor com perdedor</b>. Quem perde a final dos vencedores vai à repescagem e enfrenta o vencedor dos perdedores. <b>1º da chave = invicto · 2º = vencedor da repescagem.</b>',adm:1,run:async t=>{
    setMod('truco');show('s-fmt');await sleep(1200);await point($('#f-sys [data-v="dupla"]'),t);await sleep(900);
    const b=$('#fmtBody');b.scrollTo({top:b.scrollHeight,behavior:'smooth'});await sleep(700);await tap($('#f-gen'),t);hide();await sleep(2500);
-   const d=$('#dblBody');for(let i=0;i<9;i++){if(!alive(t))return;d.scrollBy({top:100,behavior:'smooth'});await sleep(700)}}},
+   const d=$('#dblBody');for(let i=0;i<5;i++){if(!alive(t))return;d.scrollBy({top:110,behavior:'smooth'});await sleep(800)}
+   d.scrollTo({top:0,behavior:'smooth'});await sleep(600);await tap($('#chTabs [data-c="1"]'),t);await sleep(1500);hide()}},
+ {ph:'Administrador',t:'Truco: quartas, semi e final',x:'O <b>1º e o 2º de cada chave</b> vão para as quartas no mesmo cruzamento: 1º A × 2º D, 1º B × 2º C, 1º C × 2º B e 1º D × 2º A. Depois semifinal, final e disputa de 3º.',adm:1,run:async t=>{
+   if(cur!=='s-dbl'){renderDbl();show('s-dbl');await sleep(800)}
+   await tap($('#dblKo'),t);hide();await sleep(1500);const k=$('#koBody');for(let i=0;i<8;i++){if(!alive(t))return;k.scrollBy({top:100,behavior:'smooth'});await sleep(600)}}},
  {ph:'Administrador',t:'Truco: ranking individual',x:'Mesmo inscrito em dupla, no truco o <b>ranking é individual</b>: cada jogador acumula os seus pontos ao longo do torneio.',adm:1,run:async t=>{renderRank();show('s-rank');await sleep(4000)}},
 ];
 
@@ -683,6 +716,7 @@ function fit(){
   ph.style.transform=s<1?`scale(${s})`:'';box.style.height=(800*s)+'px';box.style.width=(390*s)+'px';
 }
 addEventListener('resize',fit);fit();
+$$('.bar').forEach(b=>{const i=document.createElement('img');i.src='logo-av.png';i.alt='Associação Volvo';i.className='lg';b.appendChild(i)});
 renderFmt();setNMod('volei');go(0);
 </script>
 </body>
