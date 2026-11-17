@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AV Torneios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --stage1:#0a1024; --stage2:#14204a; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0;
+  --app:#f4f6fb; --card:#ffffff; --brand:#2546d6; --brand2:#5b7cff; --ok:#16a34a; --gold:#f59e0b; --red:#e11d48;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Outfit,system-ui,sans-serif;background:radial-gradient(1200px 700px at 80% 10%,#25307a 0%,transparent 60%),linear-gradient(160deg,var(--stage1),var(--stage2));color:#fff;min-height:100vh}
+.stage{max-width:1180px;margin:0 auto;padding:28px 16px;display:grid;grid-template-columns:1fr 400px;gap:48px;align-items:center;min-height:100vh}
+/* ---------- painel esquerdo ---------- */
+.logo{display:flex;align-items:center;gap:12px;font-weight:800;font-size:22px;letter-spacing:.3px}
+.logo .mk{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--brand2),#22c55e);display:grid;place-items:center;font-size:18px;box-shadow:0 8px 24px #22c55e40}
+.phase{margin-top:36px;display:inline-block;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 12px;border-radius:999px;background:#ffffff14;color:#a5b4fc}
+.phase.adm{color:#fcd34d}
+#stepTitle{font-size:40px;line-height:1.1;font-weight:800;margin:14px 0 14px}
+#stepText{font-size:17px;line-height:1.6;color:#c7d2fe;max-width:560px}
+#stepText b{color:#fff}
+.anim-in{animation:fadeUp .5s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.controls{display:flex;gap:10px;margin-top:30px;flex-wrap:wrap}
+.btn-s{border:0;font:inherit;font-weight:600;font-size:15px;padding:12px 18px;border-radius:12px;cursor:pointer;background:#ffffff14;color:#fff;transition:.2s}
+.btn-s:hover{background:#ffffff26}
+.btn-s.primary{background:linear-gradient(135deg,var(--brand2),var(--brand));box-shadow:0 8px 20px #2546d655}
+.dots{display:flex;gap:6px;margin-top:26px;flex-wrap:wrap}
+.dot{width:26px;height:6px;border-radius:4px;background:#ffffff22;cursor:pointer;transition:.3s}
+.dot.on{background:#7c93ff;width:40px}
+.dot.adm{background:#f59e0b33}.dot.adm.on{background:var(--gold)}
+.progress{height:3px;background:#ffffff14;border-radius:3px;margin-top:14px;overflow:hidden;max-width:560px}
+.progress i{display:block;height:100%;width:0;background:#7c93ff}
+/* ---------- celular ---------- */
+.phone{width:390px;height:800px;border-radius:52px;background:#05070f;padding:12px;box-shadow:0 40px 90px #0009,inset 0 0 0 2px #2a2f45;position:relative;justify-self:center}
+.notch{position:absolute;top:22px;left:50%;transform:translateX(-50%);width:110px;height:30px;border-radius:20px;background:#000;z-index:20}
+.screen-wrap{width:100%;height:100%;border-radius:42px;overflow:hidden;background:var(--app);position:relative;color:var(--ink)}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;transform:translateX(40px);pointer-events:none;transition:opacity .45s ease,transform .45s ease}
+.screen.on{opacity:1;transform:none;pointer-events:auto}
+.screen.out{opacity:0;transform:translateX(-40px)}
+.status{height:50px;flex:none;display:flex;justify-content:space-between;align-items:flex-end;padding:0 28px 6px;font-size:13px;font-weight:600}
+.bar{flex:none;display:flex;align-items:center;gap:10px;padding:8px 18px 12px}
+.bar h2{font-size:20px;font-weight:700}
+.bar .back{width:34px;height:34px;border-radius:10px;background:#fff;border:1px solid var(--line);display:grid;place-items:center;cursor:pointer;font-size:16px}
+.bar .sub{font-size:12px;color:var(--muted)}
+.body{flex:1;overflow-y:auto;padding:4px 18px 24px;scrollbar-width:none}
+.body::-webkit-scrollbar{display:none}
+.hero-band{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-radius:20px;padding:16px;margin-bottom:14px}
+.hero-band.adm{background:linear-gradient(135deg,#b45309,#f59e0b)}
+.hero-band small{opacity:.85;font-size:12px}
+.hero-band h3{font-size:18px;margin-top:2px}
+label.f{display:block;font-size:12px;font-weight:600;color:var(--muted);margin:12px 0 6px}
+.inp{width:100%;font:inherit;font-size:15px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:#fff;color:var(--ink);outline:none;transition:.2s}
+.inp:focus,.inp.typing{border-color:var(--brand2);box-shadow:0 0 0 4px #5b7cff22}
+.inp[readonly]{background:#eef2ff;color:#3730a3}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.drop{margin-top:6px;border:2px dashed #c7d2fe;border-radius:14px;padding:14px;text-align:center;font-size:13px;color:var(--muted);cursor:pointer;background:#fff;transition:.3s}
+.drop.has{border-style:solid;border-color:#86efac;background:#f0fdf4;color:#166534;text-align:left;display:flex;gap:10px;align-items:center}
+.drop .ic{font-size:22px}
+.btn{width:100%;border:0;font:inherit;font-weight:700;font-size:16px;padding:15px;border-radius:14px;cursor:pointer;background:linear-gradient(135deg,var(--brand2),var(--brand));color:#fff;margin-top:18px;box-shadow:0 10px 20px #2546d633;transition:.2s;position:relative;overflow:hidden}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.gold{background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 10px 20px #d9770633}
+.btn.ghost{background:#fff;color:var(--brand);border:1.5px solid #c7d2fe;box-shadow:none}
+.tap{animation:tap .35s ease}
+@keyframes tap{50%{transform:scale(.95);filter:brightness(1.15)}}
+.cursor{position:absolute;width:26px;height:26px;border-radius:50%;background:#2546d633;border:2px solid #2546d6aa;pointer-events:none;z-index:50;transition:all .45s cubic-bezier(.5,0,.2,1);opacity:0}
+.card{background:var(--card);border-radius:18px;padding:14px;border:1px solid var(--line);margin-bottom:12px}
+.stagger>*{animation:fadeUp .45s ease both}
+.stagger>*:nth-child(2){animation-delay:.08s}.stagger>*:nth-child(3){animation-delay:.16s}.stagger>*:nth-child(4){animation-delay:.24s}.stagger>*:nth-child(5){animation-delay:.32s}.stagger>*:nth-child(6){animation-delay:.4s}
+.tcard{display:flex;gap:12px;align-items:center}
+.tcard .em{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:28px;flex:none}
+.tcard h4{font-size:16px}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:#eef2ff;color:#3730a3;margin-top:4px;margin-right:4px}
+.tag.g{background:#dcfce7;color:#166534}.tag.y{background:#fef3c7;color:#92400e}.tag.r{background:#ffe4e6;color:#9f1239}
+.mini-btn{border:0;font:inherit;font-weight:700;font-size:13px;padding:9px 12px;border-radius:10px;background:var(--brand);color:#fff;cursor:pointer;margin-left:auto;flex:none}
+.opt{display:flex;gap:14px;align-items:center;padding:18px;border-radius:18px;border:2px solid var(--line);background:#fff;margin-bottom:12px;cursor:pointer;transition:.25s}
+.opt .em{font-size:30px}
+.opt h4{font-size:16px}.opt p{font-size:13px;color:var(--muted)}
+.opt.sel{border-color:var(--brand2);background:#eef2ff;box-shadow:0 0 0 4px #5b7cff22}
+.chips{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.chip{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 12px;animation:fadeUp .35s ease both}
+.av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;color:#fff;flex:none}
+.chip .nm{font-size:14px;font-weight:600}.chip .mt{font-size:11px;color:var(--muted)}
+.chip .x{margin-left:auto;color:var(--muted);cursor:pointer;font-size:18px}
+.counter{float:right;font-weight:700;color:var(--brand)}
+.sugg{background:#fff;border:1px solid var(--line);border-radius:12px;margin-top:6px;overflow:hidden;box-shadow:0 12px 24px #0f172a14}
+.sugg div{padding:10px 12px;display:flex;gap:10px;align-items:center;cursor:pointer;font-size:14px}
+.sugg div:hover,.sugg div.hl{background:#eef2ff}
+.warn{font-size:12px;background:#fff1f2;color:#9f1239;border-radius:10px;padding:10px;margin-top:6px}
+.info{font-size:12px;background:#eef2ff;color:#3730a3;border-radius:10px;padding:10px;margin-top:8px;line-height:1.45}
+.okwrap{text-align:center;padding-top:40px}
+.check{width:110px;height:110px;border-radius:50%;background:#dcfce7;margin:0 auto 18px;display:grid;place-items:center;animation:pop .6s cubic-bezier(.3,1.6,.5,1) both}
+.check svg{width:58px;height:58px}
+.check path{stroke:#16a34a;stroke-width:6;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:80;stroke-dashoffset:80;animation:draw .6s .35s ease forwards}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+.confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.confetti i{position:absolute;top:-10px;width:8px;height:14px;border-radius:2px;animation:fall 2.4s ease-in forwards}
+@keyframes fall{to{transform:translateY(820px) rotate(540deg);opacity:.2}}
+.seg{display:flex;background:#e9edf7;border-radius:12px;padding:4px;gap:4px}
+.seg button{flex:1;border:0;font:inherit;font-weight:600;font-size:13px;padding:9px 4px;border-radius:9px;background:transparent;cursor:pointer;color:var(--muted)}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 2px 6px #0f172a14}
+.stepper{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:6px}
+.stepper button{width:34px;height:34px;border:0;border-radius:9px;background:#eef2ff;color:var(--brand);font-size:18px;font-weight:700;cursor:pointer}
+.stepper b{font-size:18px}
+.radio{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border:1.5px solid var(--line);border-radius:12px;background:#fff;margin-bottom:8px;cursor:pointer;transition:.2s}
+.radio .rb{width:18px;height:18px;border-radius:50%;border:2px solid #cbd5e1;flex:none;margin-top:2px;transition:.2s}
+.radio.on{border-color:var(--gold);background:#fffbeb}
+.radio.on .rb{border:6px solid var(--gold)}
+.radio.lock{opacity:.4;pointer-events:none}
+.radio h5{font-size:14px}.radio p{font-size:11.5px;color:var(--muted);line-height:1.35}
+.tg{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px;font-weight:600}
+.tg small{display:block;font-weight:400;font-size:11px;color:var(--muted)}
+.sw{width:44px;height:26px;border-radius:20px;background:#cbd5e1;position:relative;cursor:pointer;transition:.25s;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.25s;box-shadow:0 1px 3px #0003}
+.sw.on{background:var(--gold)}.sw.on::after{left:21px}
+.sw.dis{opacity:.35;pointer-events:none}
+.sec{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#94a3b8;margin:18px 0 8px}
+table.st{width:100%;border-collapse:collapse;font-size:12.5px}
+table.st th{color:var(--muted);font-weight:600;text-align:center;padding:6px 2px;font-size:11px}
+table.st td{text-align:center;padding:7px 2px;border-top:1px solid var(--line)}
+table.st td.n{text-align:left;font-weight:600}
+table.st tr.q td{background:#f0fdf4}
+table.st tr.q td:first-child{box-shadow:inset 3px 0 0 var(--ok)}
+table.st tr{animation:fadeUp .4s ease both}
+.gh{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.gh h4{font-size:15px}
+.match{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:10px;animation:fadeUp .45s ease both}
+.match .lb{font-size:10.5px;font-weight:700;color:var(--muted);padding:6px 10px 2px;text-transform:uppercase;letter-spacing:.5px;display:flex;justify-content:space-between}
+.match .tm{display:flex;justify-content:space-between;padding:6px 10px;font-size:13.5px}
+.match .tm.w{font-weight:700;color:var(--ok)}
+.match .tm.w::before{content:"▸ "}
+.match .tm b{font-variant-numeric:tabular-nums}
+.match.final{border:2px solid var(--gold);box-shadow:0 10px 24px #f59e0b33}
+.round{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--brand);margin:14px 0 8px;display:flex;align-items:center;gap:8px}
+.round::after{content:"";flex:1;height:1px;background:var(--line)}
+.round.lw{color:var(--red)}
+.champ{text-align:center;background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:18px;padding:16px;margin-top:6px;animation:pop .6s cubic-bezier(.3,1.6,.5,1) both}
+.champ .t{font-size:40px}.champ h3{font-size:20px}.champ p{font-size:12px;color:#92400e}
+.podium{display:flex;gap:8px;margin-top:10px}
+.podium div{flex:1;background:#fff;border-radius:12px;padding:8px;text-align:center;font-size:12px}
+.rk{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:8px;animation:fadeUp .4s ease both}
+.rk .p{width:26px;font-weight:800;color:var(--muted);text-align:center}
+.rk .pts{margin-left:auto;text-align:right;font-weight:800;color:var(--brand)}
+.rk .pts small{display:block;font-weight:500;font-size:10.5px;color:var(--muted)}
+.splash{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#2546d6,#5b7cff 60%,#22c55e);color:#fff;text-align:center;padding:30px}
+.splash .big{width:120px;height:120px;border-radius:34px;background:#ffffff22;display:grid;place-items:center;font-size:40px;font-weight:800;backdrop-filter:blur(4px);animation:pop .8s cubic-bezier(.3,1.6,.5,1) both;border:2px solid #ffffff44}
+.splash h1{font-size:34px;margin-top:20px;animation:fadeUp .6s .3s both}
+.splash p{opacity:.9;margin-top:6px;animation:fadeUp .6s .45s both}
+.splash .balls{font-size:28px;margin-top:26px;letter-spacing:12px;animation:fadeUp .6s .6s both}
+.adm-badge{font-size:11px;font-weight:700;background:#fef3c7;color:#92400e;padding:4px 8px;border-radius:999px;margin-left:auto}
+.tabbar{flex:none;display:flex;justify-content:space-around;padding:10px 0 22px;background:#fff;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}
+.tabbar div{text-align:center}.tabbar div.on{color:var(--brand);font-weight:700}
+.tabbar span{display:block;font-size:20px}
+.legend{display:flex;gap:12px;font-size:11px;color:var(--muted);margin:6px 0}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.explain{font-size:11.5px;color:var(--muted);padding:0 10px 8px;line-height:1.35}
+@media (max-width:900px){
+  .stage{grid-template-columns:1fr;gap:26px;padding-top:20px}
+  #stepTitle{font-size:28px}
+  .phase{margin-top:18px}
+  .phone{transform-origin:top center}
+}
+@media (max-width:430px){
+  .phone{width:100%;max-width:390px;height:760px;border-radius:40px;padding:8px}
+  .screen-wrap{border-radius:34px}
+}
+</style>
+</head>
+<body>
+<div class="stage">
+  <section>
+    <div class="logo"><div class="mk">AV</div>AV Torneios <span style="font-weight:400;opacity:.6;font-size:15px;margin-left:6px">· protótipo de telas</span></div>
+    <div id="phase" class="phase">Atleta</div>
+    <h1 id="stepTitle">Bem-vindo</h1>
+    <p id="stepText"></p>
+    <div class="progress"><i id="prog"></i></div>
+    <div class="controls">
+      <button class="btn-s" id="prev">← Anterior</button>
+      <button class="btn-s primary" id="play">▶ Apresentar automático</button>
+      <button class="btn-s" id="next">Próximo →</button>
+    </div>
+    <div class="dots" id="dots"></div>
+  </section>
+
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="screen-wrap" id="wrap">
+      <div class="cursor" id="cursor"></div>
+
+      <!-- SPLASH -->
+      <div class="screen" id="s-splash">
+        <div class="splash">
+          <div class="big">AV</div>
+          <h1>AV Torneios</h1>
+          <p>Campeonatos e torneios<br>na palma da mão</p>
+          <div class="balls">🏐⚽🃏</div>
+        </div>
+      </div>
+
+      <!-- CADASTRO -->
+      <div class="screen" id="s-cad">
+        <div class="status"><span>9:41</span><span>●●● 📶 🔋</span></div>
+        <div class="bar"><div><h2>Cadastre aqui seus dados</h2><div class="sub">Cadastro do atleta</div></div></div>
+        <div class="body">
+          <label class="f">Nome completo</label><input class="inp" id="c-nome" placeholder="Seu nome">
+          <label class="f">Matrícula</label><input class="inp" id="c-mat" placeholder="Ex.: A123456">
+          <label class="f">Telefone para contato</label><input class="inp" id="c-tel" placeholder="(41) 90000-0000" inputmode="tel">
+          <label class="f">E-mail</label><input class="inp" id="c-email" placeholder="voce@email.com" type="email">
+          <label class="f">Atestado médico</label>
+          <label class="drop" id="drop"><input type="file" id="c-file" hidden accept=".pdf,image/*"><span class="ic">📎</span><span id="dropTxt">Toque para anexar o atestado médico<br><small>PDF ou foto</small></span></label>
+          <button class="btn" id="c-save">Salvar cadastro</button>
+        </div>
+      </div>
+
+      <!-- LISTA TORNEIOS -->
+      <div class="screen" id="s-list">
+        <div class="status"><span>9:41</span><span>●●● 📶 🔋</span></div>
+        <div class="bar"><div><div class="sub" id="hello">Olá!</div><h2>Campeonatos disponíveis</h2></div></div>
+        <div class="body"><div id="tlist" class="stagger"></div></div>
+        <div class="tabbar"><div class="on"><span>🏆</span>Torneios</div><div><span>📋</span>Inscrições</div><div><span>👤</span>Perfil</div></div>
+      </div>
+
+      <!-- PAPEL -->
+      <div class="screen" id="s-role">
+        <div class="status"><span>9:41</span><span>●●● 📶 🔋</span></div>
+        <div class="bar"><div class="back" data-go="s-list">‹</div><div><div class="sub">Inscrição</div><h2 id="roleT">Torneio</h2></div></div>
+        <div class="body">
+          <div class="hero-band" id="roleBand"></div>
+          <p style="font-size:14px;color:var(--muted);margin:4px 0 12px">Como você vai participar?</p>
+          <div class="stagger">
+            <div class="opt" id="o-rep"><div class="em">🧢</div><div><h4>Sou representante da equipe</h4><p>Cadastro a equipe e escolho os atletas</p></div></div>
+            <div class="opt" id="o-atl"><div class="em">🏃</div><div><h4>Sou atleta</h4><p>O representante me adiciona pela matrícula</p></div></div>
+          </div>
+          <button class="btn" id="roleGo" disabled>Continuar</button>
+        </div>
+      </div>
+
+      <!-- EQUIPE -->
+      <div class="screen" id="s-team">
+        <div class="status"><span>9:41</span><span>●●● 📶 🔋</span></div>
+        <div class="bar"><div class="back" data-go="s-role">‹</div><div><div class="sub" id="teamSub">Inscrição</div><h2 id="teamT">Cadastro da equipe</h2></div></div>
+        <div class="body">
+          <label class="f" id="teamLbl">Nome da equipe</label><input class="inp" id="t-nome" placeholder="Ex.: Brasil">
+          <label class="f">Representante</label><input class="inp" id="t-rep" readonly>
+          <div style="font-size:11px;color:var(--ok);margin-top:4px">✓ Puxado automaticamente do seu cadastro</div>
+          <label class="f"><span id="athLbl">Atletas</span> <span class="counter" id="cnt">1/15</span></label>
+          <input class="inp" id="t-busca" placeholder="Buscar atleta cadastrado (nome ou matrícula)">
+          <div id="sugg"></div>
+          <div class="chips" id="chips"></div>
+          <div class="info" id="teamInfo"></div>
+          <button class="btn" id="t-ok" disabled>Confirmar inscrição</button>
+        </div>
+      </div>
+
+      <!-- OK -->
+      <div class="screen" id="s-ok">
+        <div class="status"><span>9:41</span><span>●●● 📶 🔋</span></div>
+        <div class="confetti" id="conf"></div>
+        <div class="body okwrap">
+          <div class="check"><svg viewBox="0 0 60 60"><path d="M14 31 L26 43 L47 19"/></svg></div>
+          <h2 style="font-size:24px">Inscrição confirmada!</h2>
+          <p id="okTxt" style="color:var(--muted);margin-top:8px;font-size:14px;line-height:1.5"></p>
+          <div class="card" id="okCard" style="text-align:left;margin-top:18px"></div>
+          <button class="btn ghost" data-go="s-list">Ver outros campeonatos</button>
+        </div>
+      </div>
+
+      <!-- ADMIN: CRIAR -->
+      <div class="screen" id="s-new">
+        <div class="status"><span>9:41</span><span>●●● 📶 🔋</span></div>
+        <div class="bar"><div><div class="sub">Administrador</div><h2>Criar campeonato</h2></div><span class="adm-badge">ADMIN</span></div>
+        <div class="body">
+          <div class="hero-band adm"><small>Etapa 1</small><h3>Lançar o torneio e abrir inscrições</h3></div>
+          <label class="f">Nome do campeonato</label><input class="inp" id="n-nome" placeholder="Ex.: Campeonato de Vôlei">
+          <label class="f">Modalidade</label>
+          <div class="seg" id="n-mod"><button data-v="volei">🏐 Vôlei</button><button data-v="futebol">⚽ Futebol</button><button data-v="truco">🃏 Truco</button></div>
+          <label class="f">Atletas por equipe</label>
+          <div class="stepper"><button id="n-m">−</button><b id="n-max">15</b><button id="n-p">+</button></div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px" id="n-hint">Até 15 atletas por equipe</div>
+          <div class="row"><div><label class="f">Inscrições de</label><input class="inp" id="n-ini" placeholder="dd/mm"></div><div><label class="f">até</label><input class="inp" id="n-fim" placeholder="dd/mm"></div></div>
+          <button class="btn gold" id="n-pub">Publicar campeonato</button>
+        </div>
+      </div>
+
+      <!-- ADMIN: FORMATAR -->
+      <div class="screen" id="s-fmt">
+        <div class="status"><span>9:41</span><span>●●● 📶 🔋</span></div>
+        <div class="bar"><div><div class="sub">Administrador · Etapa 2</div><h2>Formatar disputa</h2></div><span class="adm-badge">ADMIN</span></div>
+        <div class="body" id="fmtBody">
+          <div class="seg" id="f-mod"><button data-v="volei">🏐 Vôlei</button><button data-v="futebol">⚽ Futebol</button><button data-v="truco">🃏 Truco</button></div>
+          <div class="info" id="f-insc"></div>
+          <div class="sec">Grupos</div>
+          <div class="row">
+            <div><div style="font-size:12px;color:var(--muted);margin-bottom:4px">Nº de grupos</div><div class="stepper"><button data-s="g" data-d="-1">−</button><b id="f-g">2</b><button data-s="g" data-d="1">+</button></div></div>
+            <div><div style="font-size:12px;color:var(--muted);margin-bottom:4px">Equipes / grupo</div><div class="stepper"><button data-s="p" data-d="-1">−</button><b id="f-p">5</b><button data-s="p" data-d="1">+</button></div></div>
+          </div>
+          <div id="f-calc" style="font-size:12px;margin-top:6px"></div>
+          <div class="sec">Sistema de disputa no grupo</div>
+          <div id="f-sys">
+            <div class="radio" data-v="simples"><div class="rb"></div><div><h5>Eliminatória simples</h5><p>Um contra o outro. Perdeu, está fora.</p></div></div>
+            <div class="radio" data-v="dupla"><div class="rb"></div><div><h5>Eliminatória dupla</h5><p>Precisa perder 2 vezes para sair. Quem perde vai para a repescagem.</p></div></div>
+            <div class="radio" data-v="rodizio"><div class="rb"></div><div><h5>Rodízio</h5><p>Todos jogam contra todos dentro do grupo.</p></div></div>
+          </div>
+          <div id="f-ptsBox">
+            <div class="sec">Pontos por jogo</div>
+            <div class="row">
+              <div><label class="f" style="margin-top:0">Vitória</label><input class="inp" id="f-v" value="3" inputmode="numeric"></div>
+              <div><label class="f" style="margin-top:0">Empate</label><input class="inp" id="f-e" value="1" inputmode="numeric"></div>
+              <div><label class="f" style="margin-top:0">Derrota</label><input class="inp" id="f-d" value="0" inputmode="numeric"></div>
+            </div>
+          </div>
+          <div class="info" id="f-trucoInfo" style="display:none">🃏 <b>Truco:</b> inscrição em dupla, mas o <b>ranking é individual</b>. O chaveamento é sempre <b>eliminatória dupla</b>.</div>
+          <div class="sec">Fases finais</div>
+          <div class="tg"><div>Quartas de final<small id="qHint">Disponível só com 4 grupos (1º e 2º de cada)</small></div><div class="sw" id="sw-q"></div></div>
+          <div class="tg"><div>Semifinal</div><div class="sw on" id="sw-s"></div></div>
+          <div class="tg"><div>Final</div><div class="sw on" id="sw-f"></div></div>
+          <div class="tg"><div>Disputa de 3º lugar<small>Perdedor Semi 1 × Perdedor Semi 2</small></div><div class="sw on" id="sw-t"></div></div>
+          <button class="btn gold" id="f-gen">Gerar tabela</button>
+        </div>
+      </div>
+
+      <!-- ADMIN: GRUPOS -->
+      <div class="screen" id="s-grp">
+        <div class="status"><span>9:41</span><span>●●● 📶 🔋</span></div>
+        <div class="bar"><div class="back" data-go="s-fmt">‹</div><div><div class="sub" id="grpSub">Fase de grupos</div><h2>Classificação</h2></div></div>
+        <div class="body" id="grpBody"></div>
+      </div>
+
+      <!-- ADMIN: MATA-MATA -->
+      <div class="screen" id="s-ko">
+        <div class="status"><span>9:41</span><span>●●● 📶 🔋</span></div>
+        <div class="bar"><div class="back" data-go="s-grp">‹</div><div><div class="sub" id="koSub">Fases finais</div><h2>Mata-mata</h2></div></div>
+        <div class="body" id="koBody"></div>
+      </div>
+
+      <!-- TRUCO: ELIMINATÓRIA DUPLA -->
+      <div class="screen" id="s-dbl">
+        <div class="status"><span>9:41</span><span>●●● 📶 🔋</span></div>
+        <div class="bar"><div><div class="sub">🃏 Torneio de Truco · Grupo A</div><h2>Eliminatória dupla</h2></div></div>
+        <div class="body" id="dblBody"></div>
+      </div>
+
+      <!-- TRUCO: RANKING -->
+      <div class="screen" id="s-rank">
+        <div class="status"><span>9:41</span><span>●●● 📶 🔋</span></div>
+        <div class="bar"><div><div class="sub">🃏 Torneio de Truco</div><h2>Ranking individual</h2></div></div>
+        <div class="body" id="rankBody"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================= DADOS ================= */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const colors=['#2546d6','#16a34a','#e11d48','#f59e0b','#7c3aed','#0891b2','#db2777','#65a30d'];
+const ini=n=>n.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+const athletes=[
+  {nome:'Sérgio Martins',mat:'A204517'},{nome:'Carla Ribeiro',mat:'A198330'},{nome:'Marcos Oliveira',mat:'A210044'},
+  {nome:'Juliana Costa',mat:'A187652'},{nome:'Rafael Souza',mat:'A222901'},{nome:'Patrícia Lima',mat:'A176420'},
+  {nome:'Bruno Ferreira',mat:'A215873'},{nome:'Aline Santos',mat:'A203118'}
+];
+let me={nome:'Leandro Moraes',mat:'A123456',tel:'(41) 99876-5432',email:'leandro@email.com'};
+const T={
+  volei:{id:'volei',nome:'Campeonato de Vôlei',em:'🏐',bg:'#fef3c7',max:15,tipo:'Equipe',ini:'10/12',fim:'15/12',insc:10},
+  futebol:{id:'futebol',nome:'Campeonato de Futebol',em:'⚽',bg:'#dcfce7',max:15,tipo:'Equipe',ini:'10/12',fim:'15/12',insc:16},
+  truco:{id:'truco',nome:'Torneio de Truco',em:'🃏',bg:'#ffe4e6',max:2,tipo:'Dupla',ini:'10/12',fim:'15/12',insc:10}
+};
+let sel=T.volei, role=null, roster=[];
+const cfg={mod:'volei',g:2,p:5,sys:'rodizio',v:3,e:1,d:0,q:false,s:true,f:true,t:true};
+const teamNames={
+  volei:['Brasil','Itália','Sérvia','Polônia','Japão','EUA','Cuba','França','Argentina','Holanda','Turquia','China','Canadá','Irã','Alemanha','Egito'],
+  futebol:['Brasil','Argentina','França','Alemanha','Espanha','Itália','Uruguai','Portugal','Inglaterra','Holanda','Croácia','Bélgica','México','Japão','Chile','Colômbia'],
+  truco:['Leandro / Sérgio','Carla / Juliana','Marcos / Rafael','Patrícia / Aline','Bruno / Diego','Tiago / Paulo','Lucas / Vitor','Ana / Bia','Caio / Davi','Edu / Fábio']
+};
+
+/* ================= NAVEGAÇÃO DE TELAS ================= */
+let cur=null;
+function show(id){
+  if(cur===id)return;
+  const old=cur&&$('#'+cur);
+  if(old){old.classList.remove('on');old.classList.add('out');setTimeout(()=>old.classList.remove('out'),450)}
+  const n=$('#'+id);n.classList.add('on');cur=id;
+  const b=n.querySelector('.body');if(b)b.scrollTop=0;
+  if(id==='s-list')renderList();
+}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)show(g.dataset.go)});
+
+/* ================= CADASTRO ================= */
+$('#c-file').addEventListener('change',e=>{if(e.target.files[0])setFile(e.target.files[0].name)});
+function setFile(name){const d=$('#drop');d.classList.add('has');$('#dropTxt').innerHTML=`<b>${name}</b><br><small>Atestado anexado ✓</small>`}
+$('#c-save').onclick=()=>{
+  const nome=$('#c-nome').value.trim();if(!nome){$('#c-nome').focus();return}
+  me={nome,mat:$('#c-mat').value.trim()||'A000000',tel:$('#c-tel').value,email:$('#c-email').value};
+  show('s-list');
+};
+
+/* ================= LISTA ================= */
+function renderList(){
+  $('#hello').textContent='Olá, '+me.nome.split(' ')[0]+' 👋';
+  $('#tlist').innerHTML=Object.values(T).map(t=>`
+   <div class="card"><div class="tcard">
+    <div class="em" style="background:${t.bg}">${t.em}</div>
+    <div><h4>${t.nome}</h4>
+     <span class="tag">${t.tipo==='Dupla'?'Dupla':'Equipe · até '+t.max}</span><span class="tag g">Inscrições abertas</span>
+     <div style="font-size:12px;color:var(--muted);margin-top:4px">🗓 ${t.ini} a ${t.fim}</div></div>
+    <button class="mini-btn" data-t="${t.id}">Inscrever</button></div></div>`).join('');
+  const el=$('#tlist');el.classList.remove('stagger');void el.offsetWidth;el.classList.add('stagger');
+}
+$('#tlist').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(b)openRole(T[b.dataset.t])});
+function openRole(t){
+  sel=t;role=null;$$('.opt').forEach(o=>o.classList.remove('sel'));$('#roleGo').disabled=true;
+  $('#roleT').textContent=t.nome;
+  $('#roleBand').innerHTML=`<small>${t.em} ${t.tipo==='Dupla'?'Inscrição em dupla':'Equipes de até '+t.max+' atletas'}</small><h3>${t.nome}</h3><small>Inscrições de ${t.ini} a ${t.fim}</small>`;
+  show('s-role');
+}
+$('#o-rep').onclick=()=>pickRole('rep');$('#o-atl').onclick=()=>pickRole('atl');
+function pickRole(r){role=r;$('#o-rep').classList.toggle('sel',r==='rep');$('#o-atl').classList.toggle('sel',r==='atl');$('#roleGo').disabled=false}
+$('#roleGo').onclick=()=>{if(role==='rep')openTeam();else confirmOk(true)};
+
+/* ================= EQUIPE ================= */
+function openTeam(){
+  const du=sel.tipo==='Dupla';
+  roster=[{...me,eu:true}];
+  $('#teamT').textContent=du?'Cadastro da dupla':'Cadastro da equipe';
+  $('#teamSub').textContent=sel.em+' '+sel.nome;
+  $('#teamLbl').textContent=du?'Nome da dupla':'Nome da equipe';
+  $('#t-nome').value='';$('#t-nome').placeholder=du?'Ex.: Os Zap':'Ex.: Brasil';
+  $('#t-rep').value=me.nome+' · '+me.mat;
+  $('#athLbl').textContent=du?'Sua dupla':'Atletas';
+  $('#teamInfo').innerHTML=du?'🃏 Truco é disputado em dupla. Seu parceiro <b>precisa ter cadastro</b> no app para ser adicionado.':`👥 Este torneio permite até <b>${sel.max} atletas</b> por equipe. Todos precisam ter cadastro.`;
+  $('#t-busca').value='';$('#sugg').innerHTML='';
+  renderChips();show('s-team');
+}
+function renderChips(){
+  $('#chips').innerHTML=roster.map((a,i)=>`<div class="chip"><div class="av" style="background:${colors[i%8]}">${ini(a.nome)}</div><div><div class="nm">${a.nome}${a.eu?' (você)':''}</div><div class="mt">Matrícula ${a.mat}${a.eu?' · representante':''}</div></div>${a.eu?'':`<span class="x" data-rm="${a.mat}">×</span>`}</div>`).join('');
+  $('#cnt').textContent=roster.length+'/'+sel.max;
+  const full=roster.length>=sel.max;$('#t-busca').disabled=full;$('#t-busca').placeholder=full?(sel.tipo==='Dupla'?'Dupla completa ✓':'Equipe completa ✓'):'Buscar atleta cadastrado (nome ou matrícula)';
+  validTeam();
+}
+function validTeam(){$('#t-ok').disabled=!($('#t-nome').value.trim()&&roster.length>=(sel.tipo==='Dupla'?2:1))}
+$('#t-nome').addEventListener('input',validTeam);
+$('#chips').addEventListener('click',e=>{const x=e.target.closest('[data-rm]');if(x){roster=roster.filter(a=>a.mat!==x.dataset.rm);renderChips()}});
+$('#t-busca').addEventListener('input',search);
+function search(){
+  const q=$('#t-busca').value.trim().toLowerCase();
+  if(q.length<2){$('#sugg').innerHTML='';return}
+  const res=athletes.filter(a=>!roster.some(r=>r.mat===a.mat)&&(a.nome.toLowerCase().includes(q)||a.mat.toLowerCase().includes(q)));
+  $('#sugg').innerHTML=res.length?`<div class="sugg">${res.map((a,i)=>`<div data-add="${a.mat}"><div class="av" style="background:${colors[(i+3)%8]};width:28px;height:28px;font-size:11px">${ini(a.nome)}</div><div><b>${a.nome}</b><br><small style="color:var(--muted)">Matrícula ${a.mat} · cadastrado ✓</small></div></div>`).join('')}</div>`
+    :`<div class="warn">⚠️ Nenhum atleta cadastrado com “${q}”. Ele precisa fazer o cadastro no app antes de entrar na ${sel.tipo==='Dupla'?'dupla':'equipe'}.</div>`;
+}
+$('#sugg').addEventListener('click',e=>{const a=e.target.closest('[data-add]');if(a)addAth(a.dataset.add)});
+function addAth(mat){const a=athletes.find(x=>x.mat===mat);if(a&&roster.length<sel.max){roster.push(a);$('#t-busca').value='';$('#sugg').innerHTML='';renderChips()}}
+$('#t-ok').onclick=()=>confirmOk(false);
+function confirmOk(atleta){
+  $('#okTxt').innerHTML=atleta?`Você está inscrito como atleta no <b>${sel.nome}</b>.<br>O representante vai te adicionar pela matrícula <b>${me.mat}</b>.`:`<b>${$('#t-nome').value}</b> está inscrita no <b>${sel.nome}</b>.`;
+  $('#okCard').innerHTML=atleta?`<div class="tcard"><div class="em" style="background:${sel.bg}">${sel.em}</div><div><h4>${me.nome}</h4><span class="tag">Atleta</span><span class="tag y">Aguardando equipe</span></div></div>`
+   :`<div class="tcard" style="margin-bottom:8px"><div class="em" style="background:${sel.bg}">${sel.em}</div><div><h4>${$('#t-nome').value}</h4><span class="tag">${roster.length} ${sel.tipo==='Dupla'?'jogadores':'atletas'}</span><span class="tag g">Confirmada</span></div></div><div style="font-size:12px;color:var(--muted)">${roster.map(r=>r.nome).join(' · ')}</div>`;
+  show('s-ok');
+  const c=$('#conf');c.innerHTML='';for(let i=0;i<40;i++){const p=document.createElement('i');p.style.left=Math.random()*100+'%';p.style.background=colors[i%8];p.style.animationDelay=Math.random()*.6+'s';c.appendChild(p)}
+}
+
+/* ================= ADMIN: CRIAR ================= */
+let nMod='volei',nMax=15;
+$('#n-mod').addEventListener('click',e=>{const b=e.target.closest('button');if(b)setNMod(b.dataset.v)});
+function setNMod(v){nMod=v;$$('#n-mod button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));nMax=v==='truco'?2:15;updN()}
+function updN(){$('#n-max').textContent=nMax;$('#n-hint').textContent=nMod==='truco'?'Truco: dupla (2 jogadores)':'Até '+nMax+' atletas por equipe'}
+$('#n-m').onclick=()=>{if(nMod!=='truco'&&nMax>1){nMax--;updN()}};$('#n-p').onclick=()=>{if(nMod!=='truco'&&nMax<15){nMax++;updN()}};
+$('#n-pub').onclick=()=>show('s-fmt');
+
+/* ================= ADMIN: FORMATAR ================= */
+$('#f-mod').addEventListener('click',e=>{const b=e.target.closest('button');if(b)setMod(b.dataset.v)});
+function setMod(v){
+  cfg.mod=v;
+  if(v==='volei'){cfg.g=2;cfg.p=5;cfg.sys='rodizio'}
+  if(v==='futebol'){cfg.g=4;cfg.p=4;cfg.sys='rodizio'}
+  if(v==='truco'){cfg.g=2;cfg.p=5;cfg.sys='dupla'}
+  renderFmt();
+}
+$('#fmtBody').addEventListener('click',e=>{
+  const s=e.target.closest('[data-s]');if(s){const k=s.dataset.s;cfg[k]=Math.max(1,Math.min(k==='g'?8:8,cfg[k]+ +s.dataset.d));renderFmt()}
+  const r=e.target.closest('.radio');if(r&&!r.classList.contains('lock')){cfg.sys=r.dataset.v;renderFmt()}
+  const w=e.target.closest('.sw');if(w&&!w.classList.contains('dis')){const k={'sw-q':'q','sw-s':'s','sw-f':'f','sw-t':'t'}[w.id];cfg[k]=!cfg[k];renderFmt()}
+});
+['f-v','f-e','f-d'].forEach(id=>$('#'+id).addEventListener('input',e=>cfg[id.slice(2)]=+e.target.value||0));
+function renderFmt(){
+  const t=T[cfg.mod],tr=cfg.mod==='truco';
+  $$('#f-mod button').forEach(b=>b.classList.toggle('on',b.dataset.v===cfg.mod));
+  $('#f-insc').innerHTML=`📥 Inscrições encerradas (${t.ini} a ${t.fim}): <b>${t.insc} ${tr?'duplas':'equipes'}</b> recebidas.`;
+  $('#f-g').textContent=cfg.g;$('#f-p').textContent=cfg.p;
+  const tot=cfg.g*cfg.p;
+  $('#f-calc').innerHTML=tot===t.insc?`<span style="color:var(--ok)">✓ ${cfg.g} grupo(s) × ${cfg.p} = ${tot} — bate com as inscrições</span>`:`<span style="color:var(--red)">${cfg.g} × ${cfg.p} = ${tot} vagas · ${t.insc} inscritas</span>`;
+  if(tr)cfg.sys='dupla';
+  $$('#f-sys .radio').forEach(r=>{r.classList.toggle('on',r.dataset.v===cfg.sys);r.classList.toggle('lock',tr&&r.dataset.v!=='dupla')});
+  $('#f-ptsBox').style.display=tr?'none':'';$('#f-trucoInfo').style.display=tr?'':'none';
+  if(cfg.g!==4)cfg.q=false;
+  $('#sw-q').classList.toggle('dis',cfg.g!==4);$('#qHint').textContent=cfg.g===4?'1º A×2º D · 1º B×2º C · 1º C×2º B · 1º D×2º A':'Disponível só com 4 grupos (1º e 2º de cada)';
+  ['q','s','f','t'].forEach(k=>$('#sw-'+k).classList.toggle('on',cfg[k]));
+}
+$('#f-gen').onclick=()=>{if(cfg.mod==='truco'){renderDbl();show('s-dbl')}else{renderGroups();show('s-grp')}};
+
+/* ================= SIMULAÇÃO ================= */
+let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+function play(a,b){ // retorna [ga,gb]; força pelo índice
+  const fa=1/(1+a.i*.18), fb=1/(1+b.i*.18), pa=fa/(fa+fb);
+  if(cfg.mod==='volei'){const w=rnd()<pa;const l=rnd()<.5?Math.floor(rnd()*3):0;return w?[3,l]:[l,3]}
+  if(cfg.mod==='truco'){const w=rnd()<pa;const l=Math.floor(rnd()*11);return w?[12,l]:[l,12]}
+  const x=rnd();if(x<.22){const g=Math.floor(rnd()*3);return [g,g]}
+  const w=x<.22+(.78*pa);const g1=1+Math.floor(rnd()*3),g2=Math.floor(rnd()*g1);return w?[g1,g2]:[g2,g1];
+}
+let groups=[];
+function renderGroups(){
+  seed=11;const L='ABCDEFGH',names=teamNames[cfg.mod];groups=[];
+  for(let g=0;g<cfg.g;g++){
+    const ts=[];for(let k=0;k<cfg.p;k++){const idx=k*cfg.g+(k%2?cfg.g-1-g:g);ts.push({n:names[idx]||('Equipe '+(idx+1)),i:idx,J:0,V:0,E:0,D:0,P:0,S:0})}
+    for(let a=0;a<ts.length;a++)for(let b=a+1;b<ts.length;b++){const [x,y]=play(ts[a],ts[b]);const A=ts[a],B=ts[b];A.J++;B.J++;A.S+=x-y;B.S+=y-x;
+      if(x>y){A.V++;B.D++;A.P+=cfg.v;B.P+=cfg.d}else if(y>x){B.V++;A.D++;B.P+=cfg.v;A.P+=cfg.d}else{A.E++;B.E++;A.P+=cfg.e;B.P+=cfg.e}}
+    ts.sort((a,b)=>b.P-a.P||b.V-a.V||b.S-a.S);groups.push({L:L[g],ts});
+  }
+  const sysN={rodizio:'Rodízio (todos contra todos)',simples:'Eliminatória simples',dupla:'Eliminatória dupla'}[cfg.sys];
+  $('#grpSub').textContent=T[cfg.mod].em+' '+T[cfg.mod].nome;
+  $('#grpBody').innerHTML=`<div class="info" style="margin-top:0">${sysN} · Vitória <b>${cfg.v}</b> pts · Empate <b>${cfg.e}</b> · Derrota <b>${cfg.d}</b></div>
+   <div class="legend"><span><i style="background:#bbf7d0"></i>Classificados (1º e 2º)</span></div>`+
+   groups.map(g=>`<div class="card"><div class="gh"><h4>Grupo ${g.L}</h4><span class="tag">${g.ts.length} equipes</span></div>
+    <table class="st"><tr><th>#</th><th style="text-align:left">Equipe</th><th>J</th><th>V</th><th>E</th><th>D</th><th>SG</th><th>Pts</th></tr>
+    ${g.ts.map((t,i)=>`<tr class="${i<2?'q':''}" style="animation-delay:${i*.06}s"><td>${i+1}</td><td class="n">${t.n}</td><td>${t.J}</td><td>${t.V}</td><td>${t.E}</td><td>${t.D}</td><td>${t.S>0?'+':''}${t.S}</td><td><b>${t.P}</b></td></tr>`).join('')}</table></div>`).join('')+
+   `<button class="btn gold" data-ko>Ver mata-mata →</button>`;
+}
+$('#grpBody').addEventListener('click',e=>{if(e.target.closest('[data-ko]')){renderKO();show('s-ko')}});
+
+function mcard(lb,a,b,ex='',cls=''){
+  const [x,y]=play(a,b);let w=x>y?a:b,l=x>y?b:a,sx=x,sy=y;
+  if(x===y){sx=x+'<small> (4)</small>';sy=y+'<small> (3)</small>';w=a;l=b} // pênaltis
+  return {w,l,html:`<div class="match ${cls}"><div class="lb"><span>${lb}</span><span>${ex}</span></div><div class="tm ${w===a?'w':''}"><span>${a.n}</span><b>${sx}</b></div><div class="tm ${w===b?'w':''}"><span>${b.n}</span><b>${sy}</b></div></div>`};
+}
+function renderKO(){
+  seed=23;let h='',G=Object.fromEntries(groups.map(g=>[g.L,g.ts])),s1a,s1b,s2a,s2b;
+  const st=(l,p)=>{const t=G[l][p-1];return {...t,n:t.n}};
+  if(cfg.q&&cfg.g===4){
+    h+='<div class="round">Quartas de final</div>';
+    const q=[['A','D'],['B','C'],['C','B'],['D','A']].map((p,i)=>mcard('Q'+(i+1)+' · 1º '+p[0]+' × 2º '+p[1],st(p[0],1),st(p[1],2)));
+    h+=q.map(m=>m.html).join('');
+    s1a=q[0].w;s1b=q[1].w;s2a=q[2].w;s2b=q[3].w;
+  }else if(cfg.g>=2){
+    s1a=st('A',1);s1b=st('B',2);s2a=st('B',1);s2b=st('A',2);
+  }else{s1a=st('A',1);s1b=st('A',4)||st('A',2);s2a=st('A',2);s2b=st('A',3)}
+  let champ=null,vice=null,third=null;
+  if(cfg.s){
+    h+='<div class="round">Semifinal</div>';
+    const lb=cfg.q?['Venc. Q1 × Venc. Q2','Venc. Q3 × Venc. Q4']:['1º A × 2º B','1º B × 2º A'];
+    const S1=mcard('Semi 1 · '+lb[0],s1a,s1b),S2=mcard('Semi 2 · '+lb[1],s2a,s2b);h+=S1.html+S2.html;
+    if(cfg.t){h+='<div class="round" style="color:#b45309">Disputa de 3º lugar</div>';const T3=mcard('Perdedor Semi 1 × Perdedor Semi 2',S1.l,S2.l);third=T3.w;h+=T3.html}
+    if(cfg.f){h+='<div class="round" style="color:#b45309">Final</div>';const F=mcard('Campeão Semi 1 × Campeão Semi 2',S1.w,S2.w,'🏆','final');champ=F.w;vice=F.l;h+=F.html}
+  }
+  if(champ)h+=`<div class="champ"><div class="t">🏆</div><p>CAMPEÃO</p><h3>${champ.n}</h3><div class="podium"><div>🥈<br><b>${vice.n}</b></div>${third?`<div>🥉<br><b>${third.n}</b></div>`:''}</div></div>`;
+  $('#koSub').textContent=T[cfg.mod].em+' '+T[cfg.mod].nome;
+  $('#koBody').innerHTML=h||'<div class="info">Ative semifinal/final na formatação.</div>';
+  $$('#koBody .match').forEach((m,i)=>m.style.animationDelay=(i*.12)+'s');
+}
+
+/* ================= TRUCO: ELIMINATÓRIA DUPLA ================= */
+function renderDbl(){
+  const n=['A · Leandro / Sérgio','B · Carla / Juliana','C · Marcos / Rafael','D · Patrícia / Aline','E · Bruno / Diego'];
+  const m=(id,lb,a,b,sa,sb,ex='',cls='')=>`<div class="match ${cls}"><div class="lb"><span>${id} · ${lb}</span><span>${ex}</span></div><div class="tm ${sa>sb?'w':''}"><span>${a}</span><b>${sa}</b></div><div class="tm ${sb>sa?'w':''}"><span>${b}</span><b>${sb}</b></div></div>`;
+  $('#dblBody').innerHTML=`
+   <div class="info" style="margin-top:0">Precisa <b>perder 2 vezes</b> para sair. Quem perde na chave principal vai para a <b>repescagem</b>. A dupla <b>E</b> aguarda a 1ª rodada.</div>
+   <div class="round">Chave dos vencedores</div>
+   ${m('J1','A × B',n[0],n[1],12,7)}
+   ${m('J2','C × D',n[2],n[3],12,9)}
+   ${m('J3','Venc. J2 × E',n[2],n[4],10,12,'E entra aqui')}
+   ${m('J4','Venc. J1 × Venc. J3',n[0],n[4],12,8,'A aguarda')}
+   <div class="round lw">Repescagem (1 derrota)</div>
+   ${m('R1','Perd. J1 × Perd. J2',n[1],n[3],12,5,'D eliminada')}
+   ${m('R2','Venc. R1 × Perd. J3',n[1],n[2],12,10,'C eliminada')}
+   ${m('R3','Venc. R2 × Perd. J4',n[4],n[1],12,11,'B eliminada')}
+   <div class="round" style="color:#b45309">Grande final do grupo</div>
+   ${m('F','Venc. chave principal × Venc. repescagem',n[0],n[4],12,6,'🏆','final')}
+   <div class="explain">Se a dupla da repescagem vencer a final, as duas ficam com 1 derrota e jogam uma partida extra.</div>`;
+  $$('#dblBody .match,#dblBody .round').forEach((e,i)=>{e.style.animation='fadeUp .45s ease both';e.style.animationDelay=(i*.15)+'s'});
+}
+function renderRank(){
+  const P=[['Leandro Moraes',6,1,78],['Sérgio Martins',6,1,78],['Bruno Ferreira',5,2,71],['Diego Alves',5,2,71],['Carla Ribeiro',4,2,62],['Juliana Costa',4,2,62],['Marcos Oliveira',3,3,55],['Rafael Souza',3,3,55],['Patrícia Lima',1,2,29],['Aline Santos',1,2,29]];
+  const md=['🥇','🥈','🥉'];
+  $('#rankBody').innerHTML=`<div class="info" style="margin-top:0">A inscrição é em dupla, mas cada jogador soma seus próprios pontos. Quem trocar de parceiro mantém a pontuação.</div><div style="height:10px"></div>`+
+   P.map((p,i)=>`<div class="rk" style="animation-delay:${i*.07}s"><div class="p">${md[Math.floor(i/2)]&&i<6?md[Math.floor(i/2)]:i+1}</div><div class="av" style="background:${colors[i%8]}">${ini(p[0])}</div><div><b style="font-size:14px">${p[0]}</b><div style="font-size:11px;color:var(--muted)">${p[1]}V · ${p[2]}D</div></div><div class="pts">${p[3]}<small>pontos</small></div></div>`).join('');
+}
+
+/* ================= DEMO / ROTEIRO ================= */
+let tok=0;const alive=t=>t===tok;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const cursor=$('#cursor');
+async function point(el,t){
+  if(!alive(t))throw 0;const w=$('#wrap').getBoundingClientRect(),r=el.getBoundingClientRect();
+  const sc=1;
+  cursor.style.opacity=1;cursor.style.left=((r.left-w.left)/sc+r.width/sc/2-13)+'px';cursor.style.top=((r.top-w.top)/sc+r.height/sc/2-13)+'px';
+  await sleep(500);if(!alive(t))throw 0;
+}
+async function tap(el,t){el.scrollIntoView({block:'nearest',behavior:'smooth'});await sleep(250);await point(el,t);el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap');await sleep(200);if(!alive(t))throw 0;el.click();await sleep(350)}
+async function type(el,txt,t){el.scrollIntoView({block:'nearest',behavior:'smooth'});await point(el,t);el.classList.add('typing');el.value='';for(const ch of txt){if(!alive(t))throw 0;el.value+=ch;el.dispatchEvent(new Event('input'));await sleep(45)}el.classList.remove('typing');await sleep(200)}
+const hide=()=>cursor.style.opacity=0;
+function resetCad(){['c-nome','c-mat','c-tel','c-email'].forEach(i=>$('#'+i).value='');$('#drop').classList.remove('has');$('#dropTxt').innerHTML='Toque para anexar o atestado médico<br><small>PDF ou foto</small>'}
+
+const steps=[
+ {ph:'Atleta',t:'AV Torneios',x:'Aplicativo de <b>campeonatos e torneios</b>. O atleta se cadastra, escolhe o campeonato e faz a inscrição. O administrador cria e formata as disputas.',run:async t=>{show('s-splash');await sleep(2600)}},
+ {ph:'Atleta',t:'Cadastro do atleta',x:'Na primeira tela o atleta <b>cadastra seus dados</b>: nome, matrícula, telefone para contato e e-mail. Também pode <b>anexar o atestado médico</b> (PDF ou foto).',run:async t=>{
+   resetCad();show('s-cad');await sleep(600);
+   await type($('#c-nome'),'Leandro Moraes',t);await type($('#c-mat'),'A123456',t);await type($('#c-tel'),'(41) 99876-5432',t);await type($('#c-email'),'leandro@email.com',t);
+   await point($('#drop'),t);$('#drop').classList.add('tap');await sleep(400);setFile('atestado_medico.pdf');await sleep(900);
+   await tap($('#c-save'),t);hide()}},
+ {ph:'Atleta',t:'Campeonatos disponíveis',x:'O atleta vê os campeonatos com <b>inscrições abertas</b> e o período de inscrição. Exemplos: <b>Torneio de Truco</b> (dupla), <b>Campeonato de Vôlei</b> e <b>Campeonato de Futebol</b> (até 15 atletas).',run:async t=>{show('s-list');await sleep(3200)}},
+ {ph:'Atleta',t:'Representante ou atleta?',x:'Ao entrar no campeonato, ele escolhe: <b>“Sou representante da equipe”</b> (cadastra a equipe) ou <b>“Sou atleta”</b> (o representante o adiciona pela matrícula).',run:async t=>{
+   show('s-list');await sleep(500);await tap($('[data-t="volei"]'),t);await sleep(800);await tap($('#o-rep'),t);await sleep(700);await tap($('#roleGo'),t);hide()}},
+ {ph:'Atleta',t:'Cadastro da equipe',x:'O representante digita o <b>nome da equipe</b> (ex.: Brasil). O nome dele já é <b>puxado do cadastro</b>. Depois busca os atletas — só aparecem quem <b>já tem cadastro</b>. O limite (15) vem da configuração do torneio.',run:async t=>{
+   if(cur!=='s-team'||sel.id!=='volei'){openRole(T.volei);pickRole('rep');openTeam()}await sleep(600);
+   await type($('#t-nome'),'Brasil',t);
+   for(const q of ['Carla','Marcos','Juliana']){await type($('#t-busca'),q,t);await sleep(500);const s=$('#sugg [data-add]');if(s)await tap(s,t)}
+   await sleep(500);await tap($('#t-ok'),t);hide();await sleep(1800)}},
+ {ph:'Atleta',t:'Truco: inscrição em dupla',x:'No truco a inscrição é em <b>dupla</b>. Ex.: Leandro inscreve ele e o <b>Sérgio</b>. O Sérgio precisa <b>ter cadastro</b> para ser puxado — se não tiver, o app avisa que ele precisa se cadastrar primeiro.',run:async t=>{
+   openRole(T.truco);await sleep(700);await tap($('#o-rep'),t);await tap($('#roleGo'),t);await sleep(500);
+   await type($('#t-nome'),'Os Zap',t);
+   await type($('#t-busca'),'Jorge',t);await sleep(1600);
+   await type($('#t-busca'),'Sérgio',t);await sleep(700);const s=$('#sugg [data-add]');if(s)await tap(s,t);
+   await sleep(600);await tap($('#t-ok'),t);hide();await sleep(2000)}},
+ {ph:'Administrador',t:'Etapa 1 · Criar campeonato',x:'Como <b>administrador</b>, primeiro eu lanço o campeonato: nome, modalidade, <b>quantidade de atletas por equipe</b> (até 15, ou dupla no truco) e o <b>período de inscrição</b> — ex.: de 10 a 15.',adm:1,run:async t=>{
+   $('#n-nome').value='';$('#n-ini').value='';$('#n-fim').value='';setNMod('volei');nMax=12;updN();show('s-new');await sleep(600);
+   await type($('#n-nome'),'Campeonato de Vôlei',t);await tap($('#n-mod [data-v="volei"]'),t);
+   for(let i=0;i<3;i++)await tap($('#n-p'),t);
+   await type($('#n-ini'),'10/12',t);await type($('#n-fim'),'15/12',t);await tap($('#n-pub'),t);hide()}},
+ {ph:'Administrador',t:'Etapa 2 · Formatar a disputa',x:'Encerradas as inscrições, formato o torneio de acordo com o que recebi. Ex.: <b>10 equipes → 2 grupos com 5</b>. Escolho o sistema no grupo (<b>eliminatória simples, dupla ou rodízio</b>), os <b>pontos por vitória/empate/derrota</b> e as fases finais.',adm:1,run:async t=>{
+   cfg.mod='volei';cfg.g=1;cfg.p=4;cfg.sys='simples';cfg.s=true;cfg.f=true;cfg.t=false;cfg.q=false;renderFmt();show('s-fmt');await sleep(700);
+   await tap($('[data-s="g"][data-d="1"]'),t);await tap($('[data-s="p"][data-d="1"]'),t);
+   await tap($('#f-sys [data-v="rodizio"]'),t);
+   await point($('#f-v'),t);await sleep(500);
+   await tap($('#sw-t'),t);await sleep(400);await tap($('#f-gen'),t);hide()}},
+ {ph:'Administrador',t:'Grupos e classificação',x:'Com o <b>rodízio</b>, todos jogam contra todos no grupo. A pontuação configurada (vitória = 3) monta o <b>ranking</b> de cada grupo. Os <b>1º e 2º</b> se classificam.',adm:1,run:async t=>{if(cur!=='s-grp'){cfg.mod='volei';cfg.g=2;cfg.p=5;cfg.sys='rodizio';cfg.t=true;renderFmt();renderGroups();show('s-grp')}await sleep(1500);const b=$('#grpBody');for(let i=0;i<6;i++){if(!alive(t))return;b.scrollBy({top:90,behavior:'smooth'});await sleep(600)}}},
+ {ph:'Administrador',t:'Semifinal, final e 3º lugar',x:'Com 2 grupos vai direto para a <b>semifinal</b>: 1º A × 2º B e 1º B × 2º A. O campeão da Semi 1 enfrenta o da Semi 2 na <b>final</b>, e a <b>disputa de 3º</b> é sempre perdedor da Semi 1 × perdedor da Semi 2.',adm:1,run:async t=>{if(!groups.length||cfg.mod!=='volei'){cfg.mod='volei';cfg.g=2;cfg.p=5;renderGroups()}renderKO();show('s-ko');await sleep(1800);const b=$('#koBody');for(let i=0;i<6;i++){if(!alive(t))return;b.scrollBy({top:100,behavior:'smooth'});await sleep(650)}}},
+ {ph:'Administrador',t:'Com 4 grupos: quartas de final',x:'As <b>quartas</b> só ficam disponíveis com <b>4 grupos</b>, usando o 1º e o 2º de cada: <b>1º A × 2º D</b>, <b>1º B × 2º C</b>, <b>1º C × 2º B</b> e <b>1º D × 2º A</b>. Os vencedores vão para as semis.',adm:1,run:async t=>{
+   setMod('futebol');cfg.q=false;renderFmt();show('s-fmt');await sleep(800);
+   const b=$('#fmtBody');b.scrollTo({top:b.scrollHeight,behavior:'smooth'});await sleep(800);
+   await tap($('#sw-q'),t);await sleep(500);await tap($('#f-gen'),t);await sleep(1500);
+   const gb=$('#grpBody');gb.scrollTo({top:gb.scrollHeight,behavior:'smooth'});await sleep(1000);
+   await tap($('[data-ko]'),t);hide();await sleep(1500);const k=$('#koBody');for(let i=0;i<8;i++){if(!alive(t))return;k.scrollBy({top:100,behavior:'smooth'});await sleep(600)}}},
+ {ph:'Administrador',t:'Truco: eliminatória dupla',x:'No truco o chaveamento é <b>sempre eliminatória dupla</b>. A × B e C × D; quem vence C×D enfrenta a <b>E</b>, que aguardava. O <b>A</b> enfrenta quem vencer esse jogo. Quem perde vai para a <b>repescagem</b>: o B joga com quem perdeu C×D. Posso também dividir em grupos.',adm:1,run:async t=>{
+   setMod('truco');show('s-fmt');await sleep(1200);await point($('#f-sys [data-v="dupla"]'),t);await sleep(900);
+   const b=$('#fmtBody');b.scrollTo({top:b.scrollHeight,behavior:'smooth'});await sleep(700);await tap($('#f-gen'),t);hide();await sleep(2500);
+   const d=$('#dblBody');for(let i=0;i<9;i++){if(!alive(t))return;d.scrollBy({top:100,behavior:'smooth'});await sleep(700)}}},
+ {ph:'Administrador',t:'Truco: ranking individual',x:'Mesmo inscrito em dupla, no truco o <b>ranking é individual</b>: cada jogador acumula os seus pontos ao longo do torneio.',adm:1,run:async t=>{renderRank();show('s-rank');await sleep(4000)}},
+];
+
+/* ================= CONTROLES ================= */
+let idx=0,auto=false;
+const dots=$('#dots');
+steps.forEach((s,i)=>{const d=document.createElement('div');d.className='dot'+(s.adm?' adm':'');d.title=s.t;d.onclick=()=>{stopAuto();go(i)};dots.appendChild(d)});
+async function go(i){
+  idx=Math.max(0,Math.min(steps.length-1,i));const s=steps[idx],t=++tok;hide();
+  $('#phase').textContent=(s.adm?'⚙️ ':'👤 ')+s.ph+' · '+(idx+1)+'/'+steps.length;$('#phase').className='phase'+(s.adm?' adm':'');
+  ['#stepTitle','#stepText'].forEach(q=>{const e=$(q);e.classList.remove('anim-in');void e.offsetWidth;e.classList.add('anim-in')});
+  $('#stepTitle').textContent=s.t;$('#stepText').innerHTML=s.x;
+  $$('.dot').forEach((d,k)=>d.classList.toggle('on',k===idx));
+  $('#prog').style.transition='none';$('#prog').style.width=(idx/(steps.length-1)*100)+'%';
+  try{await s.run(t)}catch(e){return}
+  hide();
+  if(auto&&alive(t)){await sleep(1400);if(auto&&alive(t)){if(idx<steps.length-1)go(idx+1);else stopAuto()}}
+}
+function stopAuto(){auto=false;$('#play').textContent='▶ Apresentar automático'}
+$('#play').onclick=()=>{if(auto){stopAuto();return}auto=true;$('#play').textContent='❚❚ Pausar';go(idx>=steps.length-1?0:idx)};
+$('#next').onclick=()=>{stopAuto();go(idx+1)};
+$('#prev').onclick=()=>{stopAuto();go(idx-1)};
+document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.key==='ArrowRight')$('#next').click();if(e.key==='ArrowLeft')$('#prev').click();if(e.key===' '){e.preventDefault();$('#play').click()}});
+renderFmt();setNMod('volei');go(0);
+</script>
+</body>
+</html>
