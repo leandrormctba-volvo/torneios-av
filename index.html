@@ -8,32 +8,32 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --stage1:#0a1024; --stage2:#14204a; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0;
-  --app:#f4f6fb; --card:#ffffff; --brand:#2546d6; --brand2:#5b7cff; --ok:#16a34a; --gold:#f59e0b; --red:#e11d48;
+  --stage1:#04262d; --stage2:#0c5868; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0;
+  --app:#f4f6fb; --card:#ffffff; --brand:#0c5868; --brand2:#157d93; --ok:#16a34a; --gold:#f59e0b; --red:#e11d48;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Outfit,system-ui,sans-serif;background:radial-gradient(1200px 700px at 80% 10%,#25307a 0%,transparent 60%),linear-gradient(160deg,var(--stage1),var(--stage2));color:#fff;min-height:100vh}
+body{font-family:Outfit,system-ui,sans-serif;background:radial-gradient(1200px 700px at 80% 10%,#157d93 0%,transparent 60%),linear-gradient(160deg,var(--stage1),var(--stage2));color:#fff;min-height:100vh}
 .stage{max-width:1180px;margin:0 auto;padding:28px 16px;display:grid;grid-template-columns:1fr 400px;gap:48px;align-items:center;min-height:100vh}
 /* ---------- painel esquerdo ---------- */
 .logo{display:flex;align-items:center;gap:12px;font-weight:800;font-size:22px;letter-spacing:.3px}
 .logo .mk{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--brand2),#22c55e);display:grid;place-items:center;font-size:18px;box-shadow:0 8px 24px #22c55e40}
-.phase{margin-top:36px;display:inline-block;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 12px;border-radius:999px;background:#ffffff14;color:#a5b4fc}
+.phase{margin-top:36px;display:inline-block;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 12px;border-radius:999px;background:#ffffff14;color:#9ad6e0}
 .phase.adm{color:#fcd34d}
 #stepTitle{font-size:40px;line-height:1.1;font-weight:800;margin:14px 0 14px}
-#stepText{font-size:17px;line-height:1.6;color:#c7d2fe;max-width:560px}
+#stepText{font-size:17px;line-height:1.6;color:#b5dbe2;max-width:560px}
 #stepText b{color:#fff}
 .anim-in{animation:fadeUp .5s ease both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .controls{display:flex;gap:10px;margin-top:30px;flex-wrap:wrap}
 .btn-s{border:0;font:inherit;font-weight:600;font-size:15px;padding:12px 18px;border-radius:12px;cursor:pointer;background:#ffffff14;color:#fff;transition:.2s}
 .btn-s:hover{background:#ffffff26}
-.btn-s.primary{background:linear-gradient(135deg,var(--brand2),var(--brand));box-shadow:0 8px 20px #2546d655}
+.btn-s.primary{background:linear-gradient(135deg,var(--brand2),var(--brand));box-shadow:0 8px 20px #0c586855}
 .dots{display:flex;gap:6px;margin-top:26px;flex-wrap:wrap}
 .dot{width:26px;height:6px;border-radius:4px;background:#ffffff22;cursor:pointer;transition:.3s}
-.dot.on{background:#7c93ff;width:40px}
+.dot.on{background:#4fb3c4;width:40px}
 .dot.adm{background:#f59e0b33}.dot.adm.on{background:var(--gold)}
 .progress{height:3px;background:#ffffff14;border-radius:3px;margin-top:14px;overflow:hidden;max-width:560px}
-.progress i{display:block;height:100%;width:0;background:#7c93ff}
+.progress i{display:block;height:100%;width:0;background:#4fb3c4}
 /* ---------- celular ---------- */
 .phone{width:390px;height:800px;border-radius:52px;background:#05070f;padding:12px;box-shadow:0 40px 90px #0009,inset 0 0 0 2px #2a2f45;position:relative;justify-self:center}
 .phonebox{justify-self:center;position:relative}
@@ -57,32 +57,32 @@ body{font-family:Outfit,system-ui,sans-serif;background:radial-gradient(1200px 7
 .hero-band h3{font-size:18px;margin-top:2px}
 label.f{display:block;font-size:12px;font-weight:600;color:var(--muted);margin:12px 0 6px}
 .inp{width:100%;font:inherit;font-size:15px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:#fff;color:var(--ink);outline:none;transition:.2s}
-.inp:focus,.inp.typing{border-color:var(--brand2);box-shadow:0 0 0 4px #5b7cff22}
-.inp[readonly]{background:#eef2ff;color:#3730a3}
+.inp:focus,.inp.typing{border-color:var(--brand2);box-shadow:0 0 0 4px #157d9322}
+.inp[readonly]{background:#e6f3f5;color:#0c5868}
 .row{display:flex;gap:10px}.row>*{flex:1}
-.drop{margin-top:6px;border:2px dashed #c7d2fe;border-radius:14px;padding:14px;text-align:center;font-size:13px;color:var(--muted);cursor:pointer;background:#fff;transition:.3s}
+.drop{margin-top:6px;border:2px dashed #b5dbe2;border-radius:14px;padding:14px;text-align:center;font-size:13px;color:var(--muted);cursor:pointer;background:#fff;transition:.3s}
 .drop.has{border-style:solid;border-color:#86efac;background:#f0fdf4;color:#166534;text-align:left;display:flex;gap:10px;align-items:center}
 .drop .ic{font-size:22px}
-.btn{width:100%;border:0;font:inherit;font-weight:700;font-size:16px;padding:15px;border-radius:14px;cursor:pointer;background:linear-gradient(135deg,var(--brand2),var(--brand));color:#fff;margin-top:18px;box-shadow:0 10px 20px #2546d633;transition:.2s;position:relative;overflow:hidden}
+.btn{width:100%;border:0;font:inherit;font-weight:700;font-size:16px;padding:15px;border-radius:14px;cursor:pointer;background:linear-gradient(135deg,var(--brand2),var(--brand));color:#fff;margin-top:18px;box-shadow:0 10px 20px #0c586833;transition:.2s;position:relative;overflow:hidden}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 .btn.gold{background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 10px 20px #d9770633}
-.btn.ghost{background:#fff;color:var(--brand);border:1.5px solid #c7d2fe;box-shadow:none}
+.btn.ghost{background:#fff;color:var(--brand);border:1.5px solid #b5dbe2;box-shadow:none}
 .tap{animation:tap .35s ease}
 @keyframes tap{50%{transform:scale(.95);filter:brightness(1.15)}}
-.cursor{position:absolute;width:26px;height:26px;border-radius:50%;background:#2546d633;border:2px solid #2546d6aa;pointer-events:none;z-index:50;transition:all .45s cubic-bezier(.5,0,.2,1);opacity:0}
+.cursor{position:absolute;width:26px;height:26px;border-radius:50%;background:#0c586833;border:2px solid #0c5868aa;pointer-events:none;z-index:50;transition:all .45s cubic-bezier(.5,0,.2,1);opacity:0}
 .card{background:var(--card);border-radius:18px;padding:14px;border:1px solid var(--line);margin-bottom:12px}
 .stagger>*{animation:fadeUp .45s ease both}
 .stagger>*:nth-child(2){animation-delay:.08s}.stagger>*:nth-child(3){animation-delay:.16s}.stagger>*:nth-child(4){animation-delay:.24s}.stagger>*:nth-child(5){animation-delay:.32s}.stagger>*:nth-child(6){animation-delay:.4s}
 .tcard{display:flex;gap:12px;align-items:center}
 .tcard .em{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:28px;flex:none}
 .tcard h4{font-size:16px}
-.tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:#eef2ff;color:#3730a3;margin-top:4px;margin-right:4px}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:#e6f3f5;color:#0c5868;margin-top:4px;margin-right:4px}
 .tag.g{background:#dcfce7;color:#166534}.tag.y{background:#fef3c7;color:#92400e}.tag.r{background:#ffe4e6;color:#9f1239}
 .mini-btn{border:0;font:inherit;font-weight:700;font-size:13px;padding:9px 12px;border-radius:10px;background:var(--brand);color:#fff;cursor:pointer;margin-left:auto;flex:none}
 .opt{display:flex;gap:14px;align-items:center;padding:18px;border-radius:18px;border:2px solid var(--line);background:#fff;margin-bottom:12px;cursor:pointer;transition:.25s}
 .opt .em{font-size:30px}
 .opt h4{font-size:16px}.opt p{font-size:13px;color:var(--muted)}
-.opt.sel{border-color:var(--brand2);background:#eef2ff;box-shadow:0 0 0 4px #5b7cff22}
+.opt.sel{border-color:var(--brand2);background:#e6f3f5;box-shadow:0 0 0 4px #157d9322}
 .chips{display:flex;flex-direction:column;gap:8px;margin-top:8px}
 .chip{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 12px;animation:fadeUp .35s ease both}
 .av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;color:#fff;flex:none}
@@ -91,9 +91,9 @@ label.f{display:block;font-size:12px;font-weight:600;color:var(--muted);margin:1
 .counter{float:right;font-weight:700;color:var(--brand)}
 .sugg{background:#fff;border:1px solid var(--line);border-radius:12px;margin-top:6px;overflow:hidden;box-shadow:0 12px 24px #0f172a14}
 .sugg div{padding:10px 12px;display:flex;gap:10px;align-items:center;cursor:pointer;font-size:14px}
-.sugg div:hover,.sugg div.hl{background:#eef2ff}
+.sugg div:hover,.sugg div.hl{background:#e6f3f5}
 .warn{font-size:12px;background:#fff1f2;color:#9f1239;border-radius:10px;padding:10px;margin-top:6px}
-.info{font-size:12px;background:#eef2ff;color:#3730a3;border-radius:10px;padding:10px;margin-top:8px;line-height:1.45}
+.info{font-size:12px;background:#e6f3f5;color:#0c5868;border-radius:10px;padding:10px;margin-top:8px;line-height:1.45}
 .okwrap{text-align:center;padding-top:40px}
 .check{width:110px;height:110px;border-radius:50%;background:#dcfce7;margin:0 auto 18px;display:grid;place-items:center;animation:pop .6s cubic-bezier(.3,1.6,.5,1) both}
 .check svg{width:58px;height:58px}
@@ -107,7 +107,7 @@ label.f{display:block;font-size:12px;font-weight:600;color:var(--muted);margin:1
 .seg button{flex:1;border:0;font:inherit;font-weight:600;font-size:13px;padding:9px 4px;border-radius:9px;background:transparent;cursor:pointer;color:var(--muted)}
 .seg button.on{background:#fff;color:var(--ink);box-shadow:0 2px 6px #0f172a14}
 .stepper{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:6px}
-.stepper button{width:34px;height:34px;border:0;border-radius:9px;background:#eef2ff;color:var(--brand);font-size:18px;font-weight:700;cursor:pointer}
+.stepper button{width:34px;height:34px;border:0;border-radius:9px;background:#e6f3f5;color:var(--brand);font-size:18px;font-weight:700;cursor:pointer}
 .stepper b{font-size:18px}
 .radio{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border:1.5px solid var(--line);border-radius:12px;background:#fff;margin-bottom:8px;cursor:pointer;transition:.2s}
 .radio .rb{width:18px;height:18px;border-radius:50%;border:2px solid #cbd5e1;flex:none;margin-top:2px;transition:.2s}
@@ -149,14 +149,59 @@ table.st tr{animation:fadeUp .4s ease both}
 .rk .p{width:26px;font-weight:800;color:var(--muted);text-align:center}
 .rk .pts{margin-left:auto;text-align:right;font-weight:800;color:var(--brand)}
 .rk .pts small{display:block;font-weight:500;font-size:10.5px;color:var(--muted)}
-.splash{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#2546d6,#5b7cff 60%,#22c55e);color:#fff;text-align:center;padding:30px}
+.splash{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#0c5868,#157d93 60%,#22c55e);color:#fff;text-align:center;padding:30px}
 .splash .big{width:120px;height:120px;border-radius:34px;background:#ffffff22;display:grid;place-items:center;font-size:40px;font-weight:800;backdrop-filter:blur(4px);animation:pop .8s cubic-bezier(.3,1.6,.5,1) both;border:2px solid #ffffff44}
 .splash h1{font-size:34px;margin-top:20px;animation:fadeUp .6s .3s both}
 .splash p{opacity:.9;margin-top:6px;animation:fadeUp .6s .45s both}
 .splash .balls{font-size:28px;margin-top:26px;letter-spacing:12px;animation:fadeUp .6s .6s both}
-.splash{position:relative}
-.splash h1{line-height:1.1}
-.splash-logo{position:absolute;bottom:42px;left:0;right:0;margin:0 auto;height:46px;opacity:.95;animation:fadeUp .6s .8s both}
+.splash{position:relative;justify-content:flex-start;background:radial-gradient(500px 400px at 50% 30%,#157d93 0%,transparent 70%),linear-gradient(180deg,#0c5868,#063b46);padding:0}
+.sp-logo{position:absolute;left:0;right:0;margin:0 auto;top:50%;width:270px;transform:translateY(-50%);opacity:0}
+.sp-content{padding:78px 18px 0;width:100%}
+.sp-t{font-size:32px;line-height:1.1;margin-top:0;opacity:0}
+.sp-m{font-size:15px;line-height:1.5;margin:14px auto 0;max-width:300px;opacity:0}
+.sports{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:30px}
+.sport{background:#ffffff14;border:1px solid #ffffff22;border-radius:20px;padding:16px 8px 12px;opacity:0}
+.sport span{display:block;margin-top:6px;font-size:13px}
+.sport svg{width:100%;height:auto;display:block}
+.sport span{font-size:12px;font-weight:700;letter-spacing:.5px;opacity:.9}
+.splash .s{stroke:#fff;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.splash .gr{stroke-width:2;opacity:.35}
+.splash.play .sp-logo{animation:logoIn 1s ease forwards,logoDown 1s 2s cubic-bezier(.6,0,.2,1) forwards}
+@keyframes logoIn{from{opacity:0;transform:translateY(-50%) scale(.7)}to{opacity:1;transform:translateY(-50%) scale(1)}}
+@keyframes logoDown{from{top:50%;width:270px;opacity:1}to{top:calc(100% - 52px);width:120px;opacity:.85}}
+.splash.play .sp-t{animation:fadeUp .7s 2.8s both}
+.splash.play .sp-m{animation:fadeUp .7s 3.2s both}
+.splash.play .sport{animation:popIn .55s cubic-bezier(.3,1.5,.5,1) both}
+.splash.play .sport:nth-child(1){animation-delay:3.7s}.splash.play .sport:nth-child(2){animation-delay:3.95s}
+.splash.play .sport:nth-child(3){animation-delay:4.2s}.splash.play .sport:nth-child(4){animation-delay:4.45s}
+@keyframes popIn{from{opacity:0;transform:scale(.6) translateY(16px)}to{opacity:1;transform:none}}
+.kick{transform-origin:54px 56px;animation:kick 1.6s ease-in-out infinite}
+@keyframes kick{0%,100%{transform:rotate(35deg)}40%,60%{transform:rotate(-65deg)}}
+.ball-k{animation:ballK 1.6s ease-out infinite}
+@keyframes ballK{0%,38%{transform:none;opacity:1}85%{transform:translate(58px,-60px);opacity:1}100%{transform:translate(64px,-66px);opacity:0}}
+.jump{animation:jump 1.6s ease-in-out infinite}
+@keyframes jump{0%,100%{transform:none}45%,55%{transform:translateY(-14px)}}
+.spike{transform-origin:55px 37px;animation:spike 1.6s ease-in-out infinite}
+@keyframes spike{0%,42%{transform:rotate(-35deg)}55%{transform:rotate(80deg)}100%{transform:rotate(-35deg)}}
+.ball-v{animation:ballV 1.6s ease-in infinite}
+@keyframes ballV{0%{transform:translate(-10px,30px);opacity:0}20%{opacity:1}50%{transform:translate(0,-8px)}56%{transform:translate(4px,-6px);opacity:1}82%{transform:translate(58px,82px);opacity:1}100%{transform:translate(60px,82px);opacity:0}}
+.swing{transform-origin:41px 37px;animation:swing 1.6s ease-in-out infinite}
+@keyframes swing{0%,40%{transform:rotate(70deg)}55%,72%{transform:rotate(-55deg)}100%{transform:rotate(70deg)}}
+.ball-t{animation:ballT 1.6s linear infinite}
+@keyframes ballT{0%{transform:none;opacity:1}50%{transform:translate(-46px,6px)}100%{transform:translate(12px,-30px);opacity:0}}
+.card-l{animation:cardL 2s ease-in-out infinite}.card-r{animation:cardR 2s ease-in-out infinite}
+@keyframes cardL{0%,15%{transform:none}45%,85%{transform:translate(20px,8px) rotate(-12deg)}100%{transform:none}}
+@keyframes cardR{0%,30%{transform:none}60%,85%{transform:translate(-22px,8px) rotate(14deg)}100%{transform:none}}
+.truco-t{transform-origin:70px 20px;animation:truco 2s ease-in-out infinite}
+@keyframes truco{0%,50%{transform:scale(0);opacity:0}62%{transform:scale(1.25);opacity:1}75%,90%{transform:scale(1);opacity:1}100%{transform:scale(0);opacity:0}}
+.login{text-align:center;padding-top:40px}
+.login .login-logo{height:62px;margin:10px auto 22px;display:block;animation:fadeUp .6s both}
+.login h2{font-size:26px}.login p{font-size:14px;color:var(--muted);margin:6px 10px 10px;line-height:1.45}
+.login label.f,.login .inp{text-align:left}
+.or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;margin:16px 0}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.logo img{height:40px}
+.logo .sep{width:1px;height:36px;background:#ffffff33}
 .bar .lg{height:22px;margin-left:auto;opacity:.75;flex:none}
 .adm-badge+.lg{margin-left:8px}
 .bar>div:not(.back){min-width:0}
@@ -178,7 +223,7 @@ table.st tr{animation:fadeUp .4s ease both}
 <body>
 <div class="stage">
   <section>
-    <div class="logo"><div class="mk">AV</div><div>Campeonatos e Torneios AV<div style="font-weight:400;opacity:.6;font-size:13px">protótipo de telas</div></div><img src="logo-av-branca.png" alt="Associação Volvo" style="height:34px;margin-left:auto;opacity:.85"></div>
+    <div class="logo"><img src="logo-av-branca.png" alt="Associação Volvo"><div class="sep"></div><div>Campeonatos e Torneios AV<div style="font-weight:400;opacity:.6;font-size:13px">protótipo de telas</div></div></div>
     <div id="phase" class="phase">Atleta</div>
     <h1 id="stepTitle">Bem-vindo</h1>
     <p id="stepText"></p>
@@ -198,12 +243,69 @@ table.st tr{animation:fadeUp .4s ease both}
 
       <!-- SPLASH -->
       <div class="screen" id="s-splash">
-        <div class="splash">
-          <div class="big">AV</div>
-          <h1>Campeonatos<br>e Torneios AV</h1>
-          <p>Inscrições, tabelas e chaves<br>na palma da mão</p>
-          <div class="balls">🏐⚽🃏</div>
-          <img class="splash-logo" src="logo-av-branca.png" alt="Associação Volvo">
+        <div class="splash" id="splash">
+          <img class="sp-logo" src="logo-av-branca.png" alt="Associação Volvo">
+          <div class="sp-content">
+            <h1 class="sp-t">Campeonatos<br>e Torneios AV</h1>
+            <p class="sp-m">Um novo app para você realizar inscrições e acompanhar torneios na palma da mão.</p>
+            <div class="sports">
+              <!-- FUTEBOL -->
+              <div class="sport"><svg viewBox="0 0 140 100">
+                <line class="s gr" x1="6" y1="94" x2="134" y2="94"/>
+                <circle cx="50" cy="20" r="8" fill="#fff"/>
+                <path class="s" d="M50 29 L54 56"/><path class="s" d="M30 38 L51 36 L72 28"/>
+                <path class="s" d="M54 56 L46 74 L44 92"/>
+                <g class="kick"><path class="s" d="M54 56 L62 74 L60 92"/></g>
+                <g class="ball-k"><circle cx="72" cy="87" r="7" fill="#fff"/><path d="M68 85 l4 -3 l4 3 l-1.5 4 h-5z" fill="#0c5868"/></g>
+              </svg><span>Futebol</span></div>
+              <!-- VÔLEI -->
+              <div class="sport"><svg viewBox="0 0 140 100">
+                <line class="s gr" x1="6" y1="94" x2="134" y2="94"/>
+                <path class="s" d="M100 40 V94" style="stroke-width:3"/><path d="M100 40 H134" stroke="#fff" stroke-width="7" stroke-dasharray="3 2" opacity=".7"/>
+                <g class="jump">
+                  <circle cx="55" cy="24" r="8" fill="#fff"/>
+                  <path class="s" d="M55 33 L55 60"/><path class="s" d="M55 38 L42 52"/>
+                  <path class="s" d="M55 60 L47 82"/><path class="s" d="M55 60 L64 80"/>
+                  <g class="spike"><path class="s" d="M55 37 L62 12"/></g>
+                </g>
+                <circle class="ball-v" cx="68" cy="6" r="7" fill="#fff"/>
+              </svg><span>Vôlei</span></div>
+              <!-- TÊNIS -->
+              <div class="sport"><svg viewBox="0 0 140 100">
+                <line class="s gr" x1="6" y1="94" x2="134" y2="94"/>
+                <path class="s" d="M104 74 V94" style="stroke-width:3"/>
+                <circle cx="40" cy="20" r="8" fill="#fff"/>
+                <path class="s" d="M40 29 L42 58"/><path class="s" d="M40 38 L26 48"/>
+                <path class="s" d="M42 58 L33 90"/><path class="s" d="M42 58 L54 88"/>
+                <g class="swing"><path class="s" d="M41 37 L60 42 L70 38"/><ellipse cx="78" cy="35" rx="8" ry="11" class="s" style="stroke-width:3.5"/></g>
+                <circle class="ball-t" cx="128" cy="30" r="5" fill="#d9f99d"/>
+              </svg><span>Tênis</span></div>
+              <!-- TRUCO -->
+              <div class="sport"><svg viewBox="0 0 140 100">
+                <circle cx="20" cy="36" r="9" fill="#fff"/><path class="s" d="M8 70 Q20 46 32 70"/>
+                <circle cx="120" cy="36" r="9" fill="#fff"/><path class="s" d="M108 70 Q120 46 132 70"/>
+                <ellipse cx="70" cy="78" rx="52" ry="13" fill="#ffffff2a" stroke="#fff" stroke-width="3"/>
+                <g class="card-l"><rect x="30" y="54" width="13" height="18" rx="2" fill="#fff"/><text x="36.5" y="67" font-size="10" text-anchor="middle" fill="#e11d48" font-weight="700">♥</text></g>
+                <g class="card-r"><rect x="97" y="54" width="13" height="18" rx="2" fill="#fff"/><text x="103.5" y="67" font-size="10" text-anchor="middle" fill="#0c5868" font-weight="700">♣</text></g>
+                <text class="truco-t" x="70" y="26" font-size="17" font-weight="800" text-anchor="middle" fill="#fde68a">TRUCO!</text>
+              </svg><span>Truco</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOGIN -->
+      <div class="screen" id="s-login">
+        <div class="status"><span>9:41</span><span>●●● 📶 🔋</span></div>
+        <div class="body login">
+          <img src="logo-av.png" alt="Associação Volvo" class="login-logo">
+          <h2>Bem-vindo!</h2>
+          <p>Entre com sua matrícula ou faça seu cadastro para participar dos torneios.</p>
+          <label class="f">Matrícula</label><input class="inp" id="l-mat" placeholder="Ex.: A123456">
+          <label class="f">Senha</label><input class="inp" type="password" placeholder="••••••••">
+          <button class="btn" id="l-in">Entrar</button>
+          <div class="or"><span>ou</span></div>
+          <button class="btn ghost" id="l-cad" style="margin-top:0">Cadastre-se aqui</button>
         </div>
       </div>
 
@@ -370,7 +472,7 @@ table.st tr{animation:fadeUp .4s ease both}
 <script>
 /* ================= DADOS ================= */
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-const colors=['#2546d6','#16a34a','#e11d48','#f59e0b','#7c3aed','#0891b2','#db2777','#65a30d'];
+const colors=['#0c5868','#16a34a','#e11d48','#f59e0b','#7c3aed','#0891b2','#db2777','#65a30d'];
 const ini=n=>n.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
 const athletes=[
   {nome:'Sérgio Martins',mat:'A204517'},{nome:'Carla Ribeiro',mat:'A198330'},{nome:'Marcos Oliveira',mat:'A210044'},
@@ -404,6 +506,8 @@ function show(id){
 document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)show(g.dataset.go)});
 
 /* ================= CADASTRO ================= */
+$('#l-cad').onclick=()=>show('s-cad');
+$('#l-in').onclick=()=>show('s-list');
 $('#c-file').addEventListener('change',e=>{if(e.target.files[0])setFile(e.target.files[0].name)});
 function setFile(name){const d=$('#drop');d.classList.add('has');$('#dropTxt').innerHTML=`<b>${name}</b><br><small>Atestado anexado ✓</small>`}
 $('#c-save').onclick=()=>{
@@ -640,7 +744,10 @@ const hide=()=>cursor.style.opacity=0;
 function resetCad(){['c-nome','c-mat','c-tel','c-email'].forEach(i=>$('#'+i).value='');$('#drop').classList.remove('has');$('#dropTxt').innerHTML='Toque para anexar o atestado médico<br><small>PDF ou foto</small>'}
 
 const steps=[
- {ph:'Atleta',t:'Campeonatos e Torneios AV',x:'Aplicativo de <b>campeonatos e torneios da Associação Volvo</b>. O atleta se cadastra, escolhe o campeonato e faz a inscrição. O administrador cria e formata as disputas.',run:async t=>{show('s-splash');await sleep(2600)}},
+ {ph:'Atleta',t:'Campeonatos e Torneios AV',x:'Ao abrir o app, a <b>logo da Associação Volvo</b> aparece grande no centro e desce para o rodapé. Em seguida vem a mensagem de boas-vindas e a animação dos esportes: <b>futebol, vôlei, tênis e truco</b>.',run:async t=>{
+   const sp=$('#splash');sp.classList.remove('play');show('s-splash');void sp.offsetWidth;sp.classList.add('play');await sleep(9000)}},
+ {ph:'Atleta',t:'Entrar ou cadastrar-se',x:'Depois da abertura vem a tela de acesso: quem já tem cadastro <b>entra com a matrícula</b>; quem é novo toca em <b>“Cadastre-se aqui”</b>.',run:async t=>{
+   show('s-login');await sleep(1200);await point($('#l-mat'),t);await sleep(700);await tap($('#l-cad'),t);hide()}},
  {ph:'Atleta',t:'Cadastro do atleta',x:'Na primeira tela o atleta <b>cadastra seus dados</b>: nome, matrícula, telefone para contato e e-mail. Também pode <b>anexar o atestado médico</b> (PDF ou foto).',run:async t=>{
    resetCad();show('s-cad');await sleep(600);
    await type($('#c-nome'),'Leandro Moraes',t);await type($('#c-mat'),'A123456',t);await type($('#c-tel'),'(41) 99876-5432',t);await type($('#c-email'),'leandro@email.com',t);
