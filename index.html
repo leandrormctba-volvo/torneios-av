@@ -60,7 +60,7 @@ label.f{display:block;font-size:12px;font-weight:600;color:var(--muted);margin:1
 .inp:focus,.inp.typing{border-color:var(--brand2);box-shadow:0 0 0 4px #157d9322}
 .inp[readonly]{background:#e6f3f5;color:#0c5868}
 .row{display:flex;gap:10px}.row>*{flex:1}
-.drop{margin-top:6px;border:2px dashed #b5dbe2;border-radius:14px;padding:14px;text-align:center;font-size:13px;color:var(--muted);cursor:pointer;background:#fff;transition:.3s}
+.drop{display:block;margin-top:6px;border:2px dashed #b5dbe2;border-radius:14px;padding:14px;text-align:center;font-size:13px;color:var(--muted);cursor:pointer;background:#fff;transition:.3s}
 .drop.has{border-style:solid;border-color:#86efac;background:#f0fdf4;color:#166534;text-align:left;display:flex;gap:10px;align-items:center}
 .drop .ic{font-size:22px}
 .btn{width:100%;border:0;font:inherit;font-weight:700;font-size:16px;padding:15px;border-radius:14px;cursor:pointer;background:linear-gradient(135deg,var(--brand2),var(--brand));color:#fff;margin-top:18px;box-shadow:0 10px 20px #0c586833;transition:.2s;position:relative;overflow:hidden}
@@ -154,11 +154,11 @@ table.st tr{animation:fadeUp .4s ease both}
 .sp-logo{position:absolute;left:0;right:0;margin:0 auto;top:50%;width:270px;transform:translateY(-50%);opacity:0}
 .sp-m{position:absolute;left:28px;right:28px;top:40%;transform:translateY(-50%);font-size:21px;line-height:1.45;font-weight:600;opacity:0}
 .sp-m b{color:#9ad6e0}
-.sp-t{position:absolute;left:16px;right:16px;top:96px;font-size:27px;line-height:1.15;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;opacity:0}
+.sp-t{position:absolute;left:16px;right:16px;top:12%;font-size:27px;line-height:1.15;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;opacity:0}
 .sp-t small{display:block;width:46px;height:3px;background:#9ad6e0;margin:14px auto 0;border-radius:3px}
-.sp-stage{position:absolute;left:0;right:0;top:215px;height:400px;opacity:0}
-.scene{position:absolute;inset:0;opacity:0}
-.scene svg{width:100%;height:345px;display:block}
+.sp-stage{position:absolute;left:0;right:0;top:27%;bottom:100px;opacity:0}
+.scene{position:absolute;inset:0;opacity:0;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.scene svg{width:100%;height:auto;max-height:calc(100% - 24px);display:block}
 .scene .cap{font-size:13px;font-weight:800;letter-spacing:4px;color:#9ad6e0}
 /* bonecos: silhuetas cheias, sem rosto */
 .splash .hd{fill:#fff}
@@ -235,6 +235,23 @@ table.st tr{animation:fadeUp .4s ease both}
   #stepTitle{font-size:28px}
   .phase{margin-top:18px}
   .phone{transform-origin:top center}
+}
+/* ---------- celular de verdade: app em tela cheia, botões fixos embaixo ---------- */
+@media (max-width:600px){
+  .stage{display:flex;flex-direction:column;gap:16px;padding:8px 8px 92px;min-height:auto}
+  .phonebox{order:-1;width:100%!important;height:auto!important}
+  .phonebox .phone{transform:none!important;width:100%;height:calc(100dvh - 90px);min-height:540px;max-height:860px;border-radius:30px;padding:5px;box-shadow:0 14px 40px #0008}
+  .screen-wrap{border-radius:26px}
+  .notch{display:none}
+  .logo{font-size:16px;gap:10px}.logo img{height:30px}.logo .sep{height:28px}
+  .phase{margin-top:14px}
+  #stepTitle{font-size:24px;margin:10px 0}
+  #stepText{font-size:15px}
+  .controls{position:fixed;left:0;right:0;bottom:0;z-index:100;margin:0;gap:8px;flex-wrap:nowrap;
+    padding:10px 10px calc(10px + env(safe-area-inset-bottom));background:#04262df2;backdrop-filter:blur(10px);border-top:1px solid #ffffff1a}
+  .controls .btn-s{flex:1;padding:13px 6px;font-size:14px;white-space:nowrap}
+  .controls #play{flex:1.4}
+  .dots{margin-top:14px}
 }
 </style>
 </head>
@@ -860,6 +877,7 @@ $('#prev').onclick=()=>{stopAuto();go(idx-1)};
 document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.key==='ArrowRight')$('#next').click();if(e.key==='ArrowLeft')$('#prev').click();if(e.key===' '){e.preventDefault();$('#play').click()}});
 function fit(){
   const ph=$('.phone'),box=$('.phonebox');
+  if(innerWidth<=600){ph.style.transform='';box.style.width='';box.style.height='';return}
   const s=Math.min(1,(innerHeight-40)/800,(box.parentElement.clientWidth>0&&innerWidth<900?(innerWidth-32)/390:1));
   ph.style.transform=s<1?`scale(${s})`:'';box.style.height=(800*s)+'px';box.style.width=(390*s)+'px';
 }
