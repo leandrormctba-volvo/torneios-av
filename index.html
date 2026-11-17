@@ -36,6 +36,9 @@ body{font-family:Outfit,system-ui,sans-serif;background:radial-gradient(1200px 7
 .progress i{display:block;height:100%;width:0;background:#7c93ff}
 /* ---------- celular ---------- */
 .phone{width:390px;height:800px;border-radius:52px;background:#05070f;padding:12px;box-shadow:0 40px 90px #0009,inset 0 0 0 2px #2a2f45;position:relative;justify-self:center}
+.phonebox{justify-self:center;position:relative}
+.phonebox .phone{transform-origin:top left}
+.screen-wrap{overflow:clip}
 .notch{position:absolute;top:22px;left:50%;transform:translateX(-50%);width:110px;height:30px;border-radius:20px;background:#000;z-index:20}
 .screen-wrap{width:100%;height:100%;border-radius:42px;overflow:hidden;background:var(--app);position:relative;color:var(--ink)}
 .screen{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;transform:translateX(40px);pointer-events:none;transition:opacity .45s ease,transform .45s ease}
@@ -164,10 +167,6 @@ table.st tr{animation:fadeUp .4s ease both}
   .phase{margin-top:18px}
   .phone{transform-origin:top center}
 }
-@media (max-width:430px){
-  .phone{width:100%;max-width:390px;height:760px;border-radius:40px;padding:8px}
-  .screen-wrap{border-radius:34px}
-}
 </style>
 </head>
 <body>
@@ -186,7 +185,7 @@ table.st tr{animation:fadeUp .4s ease both}
     <div class="dots" id="dots"></div>
   </section>
 
-  <div class="phone">
+  <div class="phonebox"><div class="phone">
     <div class="notch"></div>
     <div class="screen-wrap" id="wrap">
       <div class="cursor" id="cursor"></div>
@@ -351,7 +350,7 @@ table.st tr{animation:fadeUp .4s ease both}
         <div class="body" id="rankBody"></div>
       </div>
     </div>
-  </div>
+  </div></div>
 </div>
 
 <script>
@@ -595,12 +594,19 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const cursor=$('#cursor');
 async function point(el,t){
   if(!alive(t))throw 0;const w=$('#wrap').getBoundingClientRect(),r=el.getBoundingClientRect();
-  const sc=1;
+  $('#wrap').scrollLeft=0;$('#wrap').scrollTop=0;
+  const sc=w.width/$('#wrap').offsetWidth||1;
   cursor.style.opacity=1;cursor.style.left=((r.left-w.left)/sc+r.width/sc/2-13)+'px';cursor.style.top=((r.top-w.top)/sc+r.height/sc/2-13)+'px';
   await sleep(500);if(!alive(t))throw 0;
 }
-async function tap(el,t){el.scrollIntoView({block:'nearest',behavior:'smooth'});await sleep(250);await point(el,t);el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap');await sleep(200);if(!alive(t))throw 0;el.click();await sleep(350)}
-async function type(el,txt,t){el.scrollIntoView({block:'nearest',behavior:'smooth'});await point(el,t);el.classList.add('typing');el.value='';for(const ch of txt){if(!alive(t))throw 0;el.value+=ch;el.dispatchEvent(new Event('input'));await sleep(45)}el.classList.remove('typing');await sleep(200)}
+function reveal(el){
+  const b=el.closest('.body');if(!b)return;
+  const br=b.getBoundingClientRect(),r=el.getBoundingClientRect(),k=br.height/b.clientHeight||1;
+  if(r.top<br.top+10)b.scrollBy({top:(r.top-br.top)/k-20,behavior:'smooth'});
+  else if(r.bottom>br.bottom-10)b.scrollBy({top:(r.bottom-br.bottom)/k+30,behavior:'smooth'});
+}
+async function tap(el,t){reveal(el);await sleep(350);await point(el,t);el.classList.remove('tap');void el.offsetWidth;el.classList.add('tap');await sleep(200);if(!alive(t))throw 0;el.click();await sleep(350)}
+async function type(el,txt,t){reveal(el);await sleep(300);await point(el,t);el.classList.add('typing');el.value='';for(const ch of txt){if(!alive(t))throw 0;el.value+=ch;el.dispatchEvent(new Event('input'));await sleep(45)}el.classList.remove('typing');await sleep(200)}
 const hide=()=>cursor.style.opacity=0;
 function resetCad(){['c-nome','c-mat','c-tel','c-email'].forEach(i=>$('#'+i).value='');$('#drop').classList.remove('has');$('#dropTxt').innerHTML='Toque para anexar o atestado médico<br><small>PDF ou foto</small>'}
 
@@ -671,6 +677,12 @@ $('#play').onclick=()=>{if(auto){stopAuto();return}auto=true;$('#play').textCont
 $('#next').onclick=()=>{stopAuto();go(idx+1)};
 $('#prev').onclick=()=>{stopAuto();go(idx-1)};
 document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.key==='ArrowRight')$('#next').click();if(e.key==='ArrowLeft')$('#prev').click();if(e.key===' '){e.preventDefault();$('#play').click()}});
+function fit(){
+  const ph=$('.phone'),box=$('.phonebox');
+  const s=Math.min(1,(innerHeight-40)/800,(box.parentElement.clientWidth>0&&innerWidth<900?(innerWidth-32)/390:1));
+  ph.style.transform=s<1?`scale(${s})`:'';box.style.height=(800*s)+'px';box.style.width=(390*s)+'px';
+}
+addEventListener('resize',fit);fit();
 renderFmt();setNMod('volei');go(0);
 </script>
 </body>
